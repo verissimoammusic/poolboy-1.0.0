@@ -1,0 +1,89 @@
+[p] 🇵🇹
+  name= color=rgb(255, 255, 255) size= weight=700 align=center
+[p] 🇵🇹
+  name= color=rgb(255, 255, 255) size=15px weight=700 align=center
+[p] 🇬🇧
+  name= color=rgb(255, 255, 255) size= weight=700 align=center
+[p] 🇬🇧
+  name= color=rgb(255, 255, 255) size=15px weight=700 align=center
+[p] PoolBoy
+  name= color= size= weight= align=
+[h4] Limpeza e Manutenção de Piscinas na zona da Carrasqueira, Lagoa de Alb
+  name= color= size= weight= align=
+[p] Fale Connosco !
+  name= color= size= weight= align=
+[p] Resposta rápida por WhatsApp
+  name= color=rgba(226, 246, 255, 0.78) size=13px weight=500 align=center
+[p] Resposta rápida por WhatsApp
+  name= color=rgba(226, 246, 255, 0.78) size=12px weight=500 align=center
+[p] Serviços
+  name= color=rgb(24, 137, 201) size=13px weight=700 align=center
+[p] Serviços
+  name= color=rgb(24, 137, 201) size=12px weight=700 align=center
+[h2] Criamos soluções higiénicas que protegem o seu sistema
+  name= color= size= weight= align=
+[p] Máxima comodidade com eficiência
+  name= color=rgb(90, 107, 118) size= weight= align=center
+[p] Máxima comodidade com eficiência
+  name= color=rgb(90, 107, 118) size=14px weight= align=center
+[h3] Limpeza Regular
+  name= color= size= weight= align=
+[p] Incluindo aspiração do fundo e paredes
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Limpeza de Filtros
+  name= color= size= weight= align=
+[p] Circulação e filtragem mais limpas
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Tratamento Químico
+  name= color= size= weight= align=
+[p] Equilíbrio de pH e cloro
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Recuperação de Água Verde
+  name= color= size= weight= align=
+[p] Tratamentos rápidos de recuperação
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Abertura de Época
+  name= color= size= weight= align=
+[p] Ativação da piscina quando chega o calor
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Invernagem
+  name= color= size= weight= align=
+[p] Tratamento e proteção da para os meses frios
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Check-up aos Equipamentos
+  name= color= size= weight= align=
+[p] Inspeções preventivas de salvaguarda
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h3] Otimização de Consumo Energético
+  name= color= size= weight= align=
+[p] Análise extensa ao sistema
+  name= color=rgb(90, 107, 118) size=14px weight=500 align=
+[h2] Entre em Contacto
+  name= color= size= weight= align=
+[p] Ligue 960 363 769 ou envie mensagem por WhatsApp, fale-nos da sua pisc
+  name= color=rgba(226, 246, 255, 0.72) size= weight= align=center
+[p] Ligue 960 363 769 ou envie mensagem por WhatsApp, fale-nos da sua pisc
+  name= color=rgba(226, 246, 255, 0.72) size=14px weight= align=center
+[p] PoolBoy · Limpeza e Manutenção de Piscinas
+  name= color=rgba(226, 246, 255, 0.42) size=13px weight=500 align=center
+[p] PoolBoy · Limpeza e Manutenção de Piscinas
+  name= color=rgba(226, 246, 255, 0.42) size=12px weight=500 align=center
+
+=== Icon Bubble <use href> mapping (in order) ===
+data-framer-name="Service Card — Aspiração"
+    -> use <use href="#3606546390"
+data-framer-name="Service Card — Limpeza de Filtros"
+    -> use <use href="#1447758117"
+data-framer-name="Service Card — Tratamento Químico"
+    -> use <use href="#668900100"
+data-framer-name="Service Card — Recuperação de Água Verde"
+    -> use <use href="#324576014"
+data-framer-name="Service Card — Recuperação de Água Verde"
+    -> use <use href="#2962436954"
+data-framer-name="Service Card — Recuperação de Água Verde"
+    -> use <use href="#2850519585"
+data-framer-name="Service Card — Recuperação de Água Verde"
+    -> use <use href="#997315869"
+data-framer-name="Service Card — Recuperação de Água Verde"
+    -> use <use href="#4021185382"
+    -> use <use href="#3459148117"
