@@ -9,7 +9,7 @@ export default function Seo() {
   const { lang, data } = useContent();
   const { seo } = data;
 
-  // LocalBusiness structured data, matching reference/index.html (headStart).
+  // LocalBusiness structured data (schema.org JSON-LD).
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

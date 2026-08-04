@@ -1,9 +1,20 @@
 import { useContent } from "../i18n/useContent.jsx";
 import { ServiceIcon } from "./icons.jsx";
 
-// Services section. Maps to "Services / Services Intro / Services Grid" from
-// reference/index.html. Renders the eight service cards extracted from the
-// original, each with its own inline SVG icon.
+// Services section:
+//   background-color #f7fbfc, max-width 1180px, padding 46px 24px, gap 28px
+//   └─ "Services Intro": max-width 720px, gap 10px
+//      └─ Kicker: "Serviços" — Inter 13px 700, color rgb(24,137,201), center
+//      └─ Title: Satoshi 34px 700, letter-spacing -0.04em, color rgb(6,24,39)
+//      └─ Copy: "Máxima comodidade..." — color rgb(90,107,118), center
+//   └─ "Services Grid":
+//        grid 4 cols minmax(190px,1fr), gap 14px, max-width 1000px
+//      └─ cards:
+//        bg #fff, radius 22px, border #06182714, min-height 176px, gap 18px
+//        └─ "Icon Bubble": 44x44, bg #e8faff, radius 14px, icon #1889c9 24px
+//        └─ "Service Text": gap 6px
+//           └─ Title: Satoshi 18px 700, ls -0.02em, color rgb(6,24,39)
+//           └─ Subtitle: Inter 14px 500, lh 1.35em, color rgb(90,107,118)
 export default function Features() {
   const { data } = useContent();
   const { services } = data;
@@ -13,47 +24,80 @@ export default function Features() {
   return (
     <section
       id="services"
-      className="relative py-16 md:py-24"
+      className="services-section mx-auto"
       data-section="services"
     >
-      <div className="container-content">
-        {/* Intro */}
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-block rounded-full bg-brand/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-100">
-            {services.kicker}
-          </span>
-          <h2 className="mt-4 font-display text-2xl font-bold leading-snug text-white md:text-4xl">
-            {services.title}
-          </h2>
-          <p className="mt-3 text-base text-white/60">{services.copy}</p>
-        </div>
+      {/* Intro */}
+      <div className="flex w-full max-w-[720px] flex-col items-center gap-2.5 px-0">
+        <p
+          className="text-center font-bold text-brand"
+          style={{
+            fontFamily: '"Inter", "Inter Placeholder", sans-serif',
+            fontSize: "13px",
+            lineHeight: "1em",
+          }}
+        >
+          {services.kicker}
+        </p>
+        <h2
+          className="w-full text-center font-bold text-ink-900"
+          style={{
+            fontFamily: '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
+            fontSize: "clamp(26px, 2.9vw, 34px)",
+            letterSpacing: "-0.04em",
+            lineHeight: "1.12em",
+            textWrap: "balance",
+          }}
+        >
+          {services.title}
+        </h2>
+        <p
+          className="w-full text-center text-slate-500"
+          style={{ fontSize: "14px", lineHeight: "1.5em" }}
+        >
+          {services.copy}
+        </p>
+      </div>
 
-        {/* Grid */}
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {list.map((s) => {
-            const { title, subtitle } = s[langKey];
-            return (
-              <article
-                key={s.id}
-                className="group relative flex flex-col gap-4 rounded-2xl border border-white/8 bg-ink-800/60 p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:bg-ink-800"
-              >
-                {/* Icon bubble */}
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/15 text-brand-100 transition-colors group-hover:bg-brand group-hover:text-white">
-                  <ServiceIcon id={s.id} />
-                </div>
-                {/* Text */}
-                <div>
-                  <h3 className="font-display text-lg font-bold text-white">
-                    {title}
-                  </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-white/55">
-                    {subtitle}
-                  </p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+      {/* Grid */}
+      <div className="services-grid">
+        {list.map((s) => {
+          const { title, subtitle } = s[langKey];
+          return (
+            <article key={s.id} className="service-card">
+              {/* Icon bubble */}
+              <div className="icon-bubble">
+                <ServiceIcon id={s.id} />
+              </div>
+              {/* Service text */}
+              <div className="flex w-full flex-col items-start gap-1.5">
+                <h3
+                  className="w-full font-bold text-ink-900"
+                  style={{
+                    fontFamily:
+                      '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
+                    fontSize: "18px",
+                    letterSpacing: "-0.02em",
+                    lineHeight: "1.2em",
+                  }}
+                >
+                  {title}
+                </h3>
+                <p
+                  className="w-full text-slate-500"
+                  style={{
+                    fontFamily: '"Inter", "Inter Placeholder", sans-serif',
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    lineHeight: "1.35em",
+                  }}
+                >
+                  {subtitle}
+                </p>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

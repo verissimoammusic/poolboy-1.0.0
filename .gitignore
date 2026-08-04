@@ -24,9 +24,3 @@ yarn-error.log*
 *.local
 .vscode/*
 !.vscode/extensions.json
-
-# One-off extraction helpers (not part of the app)
-extract-copy.cjs
-extract-links.cjs
-extracted-copy.txt
-extracted-links.txt

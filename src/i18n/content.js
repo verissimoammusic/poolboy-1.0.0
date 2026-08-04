@@ -1,21 +1,22 @@
 // =============================================================================
 // PoolBoy content + i18n dictionary.
 //
-// PT copy is lifted verbatim from reference/index.html (extracted from the
-// minified Framer SSR output). EN copy is a faithful translation written for
-// this rebuild — the original site only shipped a Portuguese page.
+// PT copy is the original Portuguese site copy. EN copy is a faithful
+// translation written for this rebuild.
 //
 // Contact details:
 //   Phone     : +351 960 363 769  (display: 960 363 769)
 //   WhatsApp  : https://wa.me/351960363769
-//   Canonical: https://poolboy.framer.website/
+//   Canonical: https://poolboy.example.com/   <-- TODO: replace with the real
+//             production domain before deploying (also drives SEO canonical
+//             + hreflang alternates in src/components/Seo.jsx).
 // =============================================================================
 
 export const CONTACT = {
   phoneDisplay: "960 363 769",
   phoneHref: "tel:+351960363769",
   whatsappHref: "https://wa.me/351960363769",
-  canonical: "https://poolboy.framer.website/",
+  canonical: "https://poolboy.example.com/",
 };
 
 // The eight service cards from the original "Services Grid".
@@ -112,7 +113,7 @@ export const content = {
       contact: "Contacto",
     },
     seo: {
-      title: "Manutenção de Piscinas em Carrasqueira e Lagoa de Albufeira",
+      title: "PoolBoy - Pool Care",
       description:
         "Manutenção de Piscinas e Pool Care na região de Carrasqueira / Lagoa de Albufeira. Serviços profissionais de limpeza, tratamento de água e invernização.",
     },
@@ -150,7 +151,7 @@ export const content = {
       contact: "Contact",
     },
     seo: {
-      title: "Pool Maintenance in Carrasqueira and Lagoa de Albufeira",
+      title: "PoolBoy - Pool Care",
       description:
         "Pool maintenance and Pool Care in the Carrasqueira / Lagoa de Albufeira area. Professional cleaning, water treatment and winterization services.",
     },
