@@ -44,7 +44,7 @@ export default function Hero({ children }) {
             />
           </div>
           <p
-            className="text-left font-bold leading-[1em] text-transparent"
+            className="pl-[0.08em] pr-[0.08em] pb-[0.12em] pt-[0.06em] text-left font-bold leading-[1.35em] text-transparent"
             style={{
               fontFamily:
                 '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',

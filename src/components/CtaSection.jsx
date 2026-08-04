@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { CONTACT, whatsappHref } from "../i18n/content.js";
 import { useContent } from "../i18n/useContent.jsx";
 import { IconWhatsApp, IconPhone } from "./icons.jsx";
@@ -15,7 +15,8 @@ import { IconWhatsApp, IconPhone } from "./icons.jsx";
 
 // Animation timing (ms)
 const TYPING_DURATION = 2000;
-const CHAR_INTERVAL = 30;
+const CHAR_INTERVAL_FIRST = 30;
+const CHAR_INTERVAL_REPLAY = 12; // faster on replay
 const PULSE_DELAY = 1500;
 
 export default function CtaSection() {
@@ -24,55 +25,67 @@ export default function CtaSection() {
   const defaultMsg =
     CONTACT.whatsappPlaceholder[lang] ?? CONTACT.whatsappPlaceholder.pt;
 
-  const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState("idle"); // "idle" | "typing" | "revealing" | "pulsing"
   const [charCount, setCharCount] = useState(0);
   const [message, setMessage] = useState("");
   const timerRef = useRef(null);
   const textareaRef = useRef(null);
   const sectionRef = useRef(null);
+  const playCountRef = useRef(0);
 
-  // ── IntersectionObserver: start animation when section scrolls into view ──
+  // ── Reset animation state ──
+  const resetAnimation = useCallback(() => {
+    clearTimeout(timerRef.current);
+    setPhase("idle");
+    setCharCount(0);
+    setMessage("");
+  }, []);
+
+  // ── IntersectionObserver: start/stop animation on scroll ──
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
+          // Restart animation (reset ensures clean state even if was "pulsing")
+          resetAnimation();
+          // Small delay so state settles before starting
+          requestAnimationFrame(() => setPhase("typing"));
+        } else {
+          // Scrolled out — reset everything
+          resetAnimation();
         }
       },
       { threshold: 0.3 },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [resetAnimation]);
 
   // ── Typing / revealing / pulsing state machine ──
   useEffect(() => {
-    if (!visible) return; // don't start until scrolled into view
-    if (phase === "idle") {
-      setPhase("typing");
-    }
     if (phase === "typing") {
       timerRef.current = setTimeout(() => {
         setCharCount(0);
         setPhase("revealing");
       }, TYPING_DURATION);
     } else if (phase === "revealing") {
+      const interval =
+        playCountRef.current > 0 ? CHAR_INTERVAL_REPLAY : CHAR_INTERVAL_FIRST;
       if (charCount < defaultMsg.length) {
         timerRef.current = setTimeout(() => {
           const next = charCount + 1;
           setCharCount(next);
           setMessage(defaultMsg.slice(0, next));
-        }, CHAR_INTERVAL);
+        }, interval);
       } else {
+        playCountRef.current += 1;
         timerRef.current = setTimeout(() => setPhase("pulsing"), PULSE_DELAY);
       }
     }
     return () => clearTimeout(timerRef.current);
-  }, [visible, phase, charCount, defaultMsg]);
+  }, [phase, charCount, defaultMsg]);
 
   useEffect(() => {
     if (phase === "pulsing" && textareaRef.current) {

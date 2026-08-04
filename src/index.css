@@ -210,9 +210,9 @@
     overflow: hidden;
   }
 
-  /* Message text area (grows to fill) */
+  /* Message text area (grows to fill, aligns to top) */
   .chat-message-area {
-    @apply flex-1;
+    @apply flex-1 self-start;
     font-family: "Inter", "Inter Placeholder", sans-serif;
     font-size: 18px;
     font-weight: 400;
@@ -312,7 +312,7 @@
     @apply inline-flex items-center gap-1.5;
   }
   .chat-dot {
-    @apply inline-block h-3 w-3 rounded-full;
+    @apply inline-block h-1.5 w-1.5 rounded-full;
     background: rgba(126, 235, 255, 0.5);
     animation: chatDotBounce 1.4s ease-in-out infinite;
   }
