@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <title>PoolBoy — Pool Care</title>
+    <script>
+      // Single Page App fallback for GitHub Pages.
+      //
+      // GitHub Pages does not perform SPA rewrites: a hard refresh (or a direct
+      // deep link) to a client-side route such as /en or /fr would otherwise
+      // return GitHub's generic 404 instead of the app.
+      //
+      // GitHub Pages serves this file whenever a requested path does not exist
+      // on disk. We stash the intended path and redirect to "/", where the
+      // React router (react-router-dom) re-reads it from the URL and renders
+      // the correct language route.
+      (function () {
+        // Rebuild the full URL including any query string / hash.
+        var path = window.location.pathname;
+        var fullServerSideUrl = path.slice(1).split("?")[0];
+        if (fullServerSideUrl) {
+          sessionStorage.setItem("github-pages-spa-redirect", path);
+        }
+        window.location.replace("/");
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecionando…</p>
+  </body>
+</html>

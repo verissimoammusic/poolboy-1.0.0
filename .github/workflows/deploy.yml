@@ -1,0 +1,70 @@
+# Deploy the PoolBoy marketing site to GitHub Pages on every push to "main".
+#
+# The custom domain (poolboy.pt) is preserved on each deploy because the
+# "CNAME" file lives in public/ and is therefore copied verbatim into "dist/"
+# by Vite and included in the uploaded Pages artifact.
+#
+# One-time setup (manual, not covered by this workflow):
+#   1. Repo Settings -> Pages: set "Source" to "GitHub Actions".
+#   2. Repo Settings -> Pages -> "Custom domain": enter "poolboy.pt",
+#      create the presented TXT verification record, save, then enable
+#      "Enforce HTTPS".
+#   3. Registrar DNS: add the four A records (apex) pointing to GitHub Pages
+#      (see README "Deployment" section):
+#        185.199.108.153 / 185.199.109.153 / 185.199.110.153 / 185.199.111.153
+name: Deploy to GitHub Pages
+
+on:
+  # Run on every push to the default branch.
+  push:
+    branches:
+      - main
+  # Allow triggering the workflow manually from the Actions tab.
+  workflow_dispatch:
+
+# Allow this workflow to deploy the GitHub Pages site.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one in-progress deployment at a time; cancel older runs on the same ref.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      # Shared Pages deploy environment. The URL is the custom domain once
+      # it is bound in repo Settings -> Pages; otherwise it defaults to the
+      # <user>.github.io/<repo> placeholder.
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Publish the Vite build output. public/CNAME and public/404.html
+          # are already copied into "dist/" by Vite.
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

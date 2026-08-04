@@ -7,9 +7,8 @@
 // Contact details:
 //   Phone     : +351 960 363 769  (display: 960 363 769)
 //   WhatsApp  : https://wa.me/351960363769
-//   Canonical: https://poolboy.example.com/   <-- TODO: replace with the real
-//             production domain before deploying (also drives SEO canonical
-//             + hreflang alternates in src/components/Seo.jsx).
+//   Canonical : https://poolboy.pt/  (drives SEO canonical + hreflang in
+//             src/components/Seo.jsx)
 // =============================================================================
 
 export const CONTACT = {

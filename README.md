@@ -301,21 +301,81 @@ them once mounted.
 
 ---
 
-## Deployment
+## Deployment to GitHub Pages (poolboy.pt)
 
-1. Run `npm run build` — outputs static assets to `dist/`.
-2. Deploy `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, GitHub
-   Pages, S3 + CloudFront, nginx, etc.).
-3. **Configure a SPA fallback / rewrite rule** so that any unknown path
-   redirects to `index.html`. Examples:
-   - **Netlify:** a `public/_redirects` file with `/* /index.html 200`
-   - **Vercel / Cloudflare Pages:** set the SPA fallback to `/index.html`
-   - **nginx:** `try_files $uri /index.html;`
-     Without this, refreshing `/en` (or any non-root path) returns the host's 404.
-4. **Replace the canonical URL** in [`content.js`](src/i18n/content.js) — change
-   `CONTACT.canonical` from the `https://poolboy.example.com/` placeholder to
-   your real domain, including the trailing slash. This drives the canonical,
-   hreflang, and `og:url` tags.
+This project is configured for automatic deployment to **GitHub Pages** with a
+custom apex domain (`poolboy.pt`). Every push to the `main` branch triggers a
+GitHub Actions workflow that builds and deploys the site.
+
+### Automated workflow
+
+The workflow in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) handles:
+
+1. `npm ci` — install dependencies
+2. `npm run build` — produce static assets in `dist/`
+3. Upload `dist/` as a Pages artifact
+4. Deploy to GitHub Pages via `actions/deploy-pages`
+
+The custom domain is preserved on each deploy because `public/CNAME` (containing
+`poolboy.pt`) is copied verbatim into `dist/` by Vite.
+
+### One-time manual setup
+
+#### 1. GitHub Repository Settings → Pages
+
+- Go to **Settings → Pages** in your GitHub repository.
+- Under **Source**, select **GitHub Actions** (already configured by the workflow).
+- Under **Custom domain**, enter `poolboy.pt`.
+- GitHub will show a **TXT verification record** — add this to your DNS.
+- Click **Save**, then enable **Enforce HTTPS** once the domain is verified.
+
+#### 2. DNS Configuration (at your domain registrar)
+
+Because `poolboy.pt` is an **apex/root domain**, you must add **A records**
+pointing to GitHub Pages' IP addresses:
+
+| Type | Name                            | Value                         |
+| ---- | ------------------------------- | ----------------------------- |
+| A    | @                               | 185.199.108.153               |
+| A    | @                               | 185.199.109.153               |
+| A    | @                               | 185.199.110.153               |
+| A    | @                               | 185.199.111.153               |
+| TXT  | \_github-pages-challenge-<user> | (value from Settings → Pages) |
+
+Replace `<user>` with your GitHub username/organization in the TXT record name.
+
+> **Note:** DNS propagation can take up to 48 hours. The domain status in
+> Settings → Pages will show as "verified" once the TXT and A records are in place.
+
+### SPA fallback for deep links
+
+The site uses client-side routing (`/en`, `/fr`). GitHub Pages serves
+[`public/404.html`](public/404.html) for unknown paths, which redirects back to
+`/` while preserving the URL. This allows refreshing `/en` or `/fr` to work
+correctly without server-side rewrites.
+
+### Manual deployment (optional)
+
+To deploy manually without pushing to `main`:
+
+```bash
+# Build locally
+npm run build
+
+# Or trigger the workflow manually from GitHub:
+# Actions tab → "Deploy to GitHub Pages" → "Run workflow"
+```
+
+### Canonical URL
+
+The canonical domain is set in [`src/i18n/content.js`](src/i18n/content.js:28):
+
+```js
+CONTACT.canonical = "https://poolboy.pt/";
+```
+
+This value drives the `<link rel="canonical">`, `hreflang` alternates, and
+`og:url` meta tags via the [`Seo`](src/components/Seo.jsx) component.
 
 ---
 
