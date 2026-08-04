@@ -60,14 +60,24 @@
   }
 
   /* Round WhatsApp icon button used in the closing Buttons row
-     (bg #25d366, radius 999px, NO box-shadow; icon fill #061827) */
+     (bg #25d366, radius 999px, shadow-wa-cta; icon fill #061827) */
   .btn-wa-round {
-    @apply inline-flex h-[52px] min-w-[52px] cursor-pointer items-center justify-center rounded-full bg-wa text-ink-900 no-underline transition-transform duration-200 hover:scale-[1.03] active:scale-95;
+    @apply inline-flex h-16 min-w-[64px] cursor-pointer items-center justify-center rounded-full bg-wa text-ink-900 no-underline shadow-wa-cta transition-transform duration-200 hover:scale-[1.05] active:scale-95;
+  }
+  @media (max-width: 1199.98px) {
+    .btn-wa-round {
+      @apply h-14 min-w-[58px];
+    }
   }
 
-  /* Round white phone button used in the closing Buttons row */
+  /* Round white phone button used in the closing Buttons row (soft shadow) */
   .btn-phone-round {
-    @apply inline-flex h-[52px] min-w-[52px] cursor-pointer items-center justify-center rounded-full bg-white text-ink-900 no-underline transition-transform duration-200 hover:scale-[1.03] active:scale-95;
+    @apply inline-flex h-16 min-w-[64px] cursor-pointer items-center justify-center rounded-full bg-white text-ink-900 no-underline shadow-[0_18px_46px_rgba(255,255,255,0.28)] transition-transform duration-200 hover:scale-[1.05] active:scale-95;
+  }
+  @media (max-width: 1199.98px) {
+    .btn-phone-round {
+      @apply h-14 min-w-[58px];
+    }
   }
 
   /* ---- Mobile note pill ----
@@ -123,24 +133,306 @@
     @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-bubble bg-cyan-50 text-brand;
   }
 
-  /* ---- Closing card ----
-     bg linear-gradient(#ffffff14 -> #ffffff0a), border #cdf4ff24, radius 30px */
-  .closing-card {
-    @apply relative flex w-full max-w-closing flex-col items-center gap-5 rounded-closing border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.04] p-7;
+  /* ---- CTA Section (Service → Contact) ----
+     Dark background with soft top glow, matching the site's ink-900 palette.
+     Structure: divider → kicker → headline → copy → buttons → trust points */
+  .cta-section {
+    @apply flex w-full max-w-content flex-col items-center gap-0 bg-ink-900 px-6 pt-0 pb-16;
+    background: radial-gradient(50% 50% at 50% 0, #21b5d62e 0%, #06182700 48%);
   }
   @media (max-width: 1199.98px) {
-    .closing-card {
-      @apply max-w-card gap-4 rounded-closing-sm px-[18px] py-[26px];
+    .cta-section {
+      @apply px-4 pb-12;
     }
   }
 
-  /* Buttons row inside the closing card */
-  .closing-buttons {
-    @apply flex w-full max-w-[620px] items-center justify-center gap-2.5;
+  /* CTA content stack */
+  .cta-content {
+    @apply flex w-full max-w-[700px] flex-col items-center gap-6 pt-12 pb-6;
   }
   @media (max-width: 1199.98px) {
-    .closing-buttons {
-      @apply max-w-[322px];
+    .cta-content {
+      @apply gap-5 pt-9;
+    }
+  }
+
+  /* ---- WhatsApp Chat Compose Bubble ----
+     Interactive compose box — typing animation → editable textarea →
+     send button that opens WhatsApp with the visitor's message. */
+  .chat-bubble-wrapper {
+    @apply relative flex w-full max-w-[700px] flex-col items-center;
+  }
+
+  .chat-bubble {
+    @apply relative flex w-full flex-col overflow-hidden;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #1d3a50 0%, #163044 100%);
+    border: 1px solid rgba(126, 235, 255, 0.14);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.25),
+      0 12px 48px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(126, 235, 255, 0.06);
+  }
+
+  /* Bubble header — avatar + sender + phone number */
+  .chat-bubble-header {
+    @apply flex items-center gap-3.5 px-7 pt-6 pb-3.5;
+    border-bottom: 1px solid rgba(126, 235, 255, 0.08);
+  }
+
+  .chat-bubble-avatar {
+    @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-full;
+    background: rgba(37, 211, 102, 0.15);
+    color: #25d366;
+  }
+
+  .chat-bubble-sender {
+    font-family: "Satoshi", "Satoshi Placeholder", "Inter", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: rgba(226, 246, 255, 0.92);
+    letter-spacing: -0.01em;
+  }
+
+  /* "online" status in header */
+  .chat-bubble-online {
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(37, 211, 102, 0.7);
+    line-height: 1.2em;
+  }
+
+  /* Message body — flex row: text area + send button */
+  .chat-bubble-body {
+    @apply flex items-end gap-4 px-7 py-5;
+    height: 140px;
+    overflow: hidden;
+  }
+
+  /* Message text area (grows to fill) */
+  .chat-message-area {
+    @apply flex-1;
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6em;
+    color: rgba(226, 246, 255, 0.9);
+    overflow: hidden;
+  }
+
+  /* Text opacity pulse — after typing finishes, the message pulses
+     gently to draw attention toward the send button */
+  .chat-text-pulse {
+    animation: chatTextPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes chatTextPulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Editable textarea — replaces message text once typing finishes */
+  .chat-textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6em;
+    color: rgba(226, 246, 255, 0.9);
+    caret-color: rgba(126, 235, 255, 0.8);
+    padding: 0;
+    margin: 0;
+  }
+  .chat-textarea::placeholder {
+    color: rgba(226, 246, 255, 0.3);
+  }
+  .chat-textarea:focus {
+    outline: none;
+  }
+
+  /* WA send button — circular, inside the bubble body */
+  .chat-send-btn {
+    @apply inline-flex shrink-0 items-center justify-center rounded-full no-underline transition-all duration-200;
+    width: 48px;
+    height: 48px;
+  }
+  .chat-send-btn.chat-send-active {
+    background: #25d366;
+    color: #061827;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    animation: chatSendNudge 3s ease-in-out infinite;
+  }
+  .chat-send-btn.chat-send-active:hover {
+    transform: scale(1.08);
+    animation: none;
+  }
+  .chat-send-btn.chat-send-active:active {
+    transform: scale(0.95);
+    animation: none;
+  }
+  .chat-send-btn.chat-send-disabled {
+    background: rgba(126, 235, 255, 0.1);
+    color: rgba(126, 235, 255, 0.25);
+    cursor: default;
+    box-shadow: none;
+  }
+
+  /* Periodic nudge on send button — gentle rightward shake to hint interaction */
+  @keyframes chatSendNudge {
+    0%,
+    70%,
+    100% {
+      transform: translateX(0);
+    }
+    78% {
+      transform: translateX(4px);
+    }
+    86% {
+      transform: translateX(-2px);
+    }
+    93% {
+      transform: translateX(2px);
+    }
+  }
+
+  /* Typing indicator — three bouncing dots */
+  .chat-typing {
+    @apply inline-flex items-center gap-1.5;
+  }
+  .chat-dot {
+    @apply inline-block h-3 w-3 rounded-full;
+    background: rgba(126, 235, 255, 0.5);
+    animation: chatDotBounce 1.4s ease-in-out infinite;
+  }
+  .chat-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .chat-dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes chatDotBounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    30% {
+      transform: translateY(-6px);
+      opacity: 1;
+    }
+  }
+
+  /* Blinking cursor shown while typing text */
+  .chat-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background: rgba(126, 235, 255, 0.7);
+    animation: chatCursorBlink 0.6s steps(2) infinite;
+  }
+
+  @keyframes chatCursorBlink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* ---- "ou" + phone call link ---- */
+  .cta-or-line {
+    @apply flex w-full items-center justify-center gap-4;
+  }
+  .cta-or-text {
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(226, 246, 255, 0.4);
+    text-transform: lowercase;
+  }
+  .cta-phone-link {
+    @apply inline-flex items-center gap-2.5 rounded-full no-underline transition-all duration-200;
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(226, 246, 255, 0.85);
+    padding: 8px 18px;
+    background: rgba(126, 235, 255, 0.08);
+    border: 1px solid rgba(126, 235, 255, 0.14);
+  }
+  .cta-phone-link:hover {
+    background: rgba(126, 235, 255, 0.16);
+    border-color: rgba(126, 235, 255, 0.3);
+    color: rgba(226, 246, 255, 1);
+  }
+  .cta-phone-link:active {
+    transform: scale(0.97);
+  }
+  .cta-phone-number {
+    font-weight: 500;
+    color: rgba(226, 246, 255, 0.9);
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 1199.98px) {
+    .chat-bubble-wrapper {
+      @apply max-w-full;
+    }
+    .chat-bubble-header {
+      @apply px-5 pt-4 pb-2.5;
+    }
+    .chat-bubble-avatar {
+      @apply h-10 w-10;
+    }
+    .chat-bubble-sender {
+      font-size: 15px;
+    }
+    .chat-bubble-online {
+      font-size: 12px;
+    }
+    .chat-bubble-body {
+      @apply px-5 py-4;
+      height: 120px;
+    }
+    .chat-message-area {
+      font-size: 16px;
+    }
+    .chat-textarea {
+      font-size: 16px;
+    }
+    .chat-send-btn {
+      width: 42px;
+      height: 42px;
+    }
+    .cta-or-line {
+      @apply gap-3;
+    }
+    .cta-or-text {
+      font-size: 14px;
+    }
+    .cta-phone-link {
+      font-size: 14px;
+      padding: 6px 14px;
     }
   }
 }

@@ -1,11 +1,12 @@
 # PoolBoy — Pool Care Marketing Site
 
-A bilingual (Portuguese / English) single-page marketing site for **PoolBoy**, a
-pool cleaning & maintenance service serving the Carrasqueira / Lagoa de
-Albufeira / Santana area in Portugal.
+A trilingual (Portuguese / English / French) single-page marketing site for
+**PoolBoy**, a pool cleaning & maintenance service serving the Carrasqueira /
+Lagoa de Albufeira / Santana area in Portugal.
 
 Built with **React 18 + Vite 5 + Tailwind CSS 3**, with route-based i18n
-(`/` = Portuguese, `/en` = English) and SEO via `react-helmet-async`.
+(`/` = Portuguese, `/en` = English, `/fr` = French) and SEO via
+`react-helmet-async`.
 
 ---
 
@@ -55,22 +56,22 @@ poolboy-site/
 │  └─ favicon.png
 └─ src/
    ├─ main.jsx              # app bootstrap: StrictMode + HelmetProvider + BrowserRouter
-   ├─ App.jsx               # routes: / (pt), /en (en), * -> redirect to /
+   ├─ App.jsx               # routes: / (pt), /en (en), /fr (fr), * -> redirect to /
    ├─ index.css            # Tailwind layers + component classes (hero-card, btn-wa, …)
    ├─ assets/
    │  └─ logo.png          # brand logo, imported by Hero.jsx (bundled, not from /public)
    ├─ pages/
-   │  └─ LandingPage.jsx   # shared page layout for both languages (keyed by lang)
+   │  └─ LandingPage.jsx   # shared page layout for all languages (keyed by lang)
    ├─ components/
-   │  ├─ Header.jsx        # floating PT/EN language slider pill
+   │  ├─ Header.jsx        # floating PT/EN/FR language dropdown pill
    │  ├─ Hero.jsx          # hero section (logo, headline, WhatsApp CTA, mobile note)
    │  ├─ Features.jsx      # services grid (8 cards)
    │  ├─ Footer.jsx        # closing CTA card + footer note
    │  ├─ Seo.jsx          # per-route <head> via Helmet (title, desc, canonical, hreflang, JSON-LD)
    │  └─ icons.jsx        # inline SVG icons (services, phone, WhatsApp)
    └─ i18n/
-      ├─ content.js        # the content dictionary (PT + EN) + CONTACT export
-      └─ useContent.jsx    # hook: reads useLocation().pathname -> returns {lang, data, alternatePath}
+      ├─ content.js        # the content dictionary (PT + EN + FR) + CONTACT export
+      └─ useContent.jsx    # hook: reads useLocation().pathname -> returns {lang, data}
 ```
 
 ---
@@ -84,6 +85,7 @@ itself determines the active language.
 | ----- | --------------------------------------------------- |
 | `/`   | Portuguese (default)                                |
 | `/en` | English                                             |
+| `/fr` | French                                              |
 | `*`   | redirects to `/` (see [`src/App.jsx`](src/App.jsx)) |
 
 ### How the language is detected
@@ -94,15 +96,33 @@ Language is read from the current path inside
 ```jsx
 export function useContent() {
   const { pathname } = useLocation();
-  const key = pathname.replace(/^\/+/, "").startsWith("en") ? "en" : "pt";
-  const data = content[key];
-  return { lang: key, data, alternatePath: key === "pt" ? "/en" : "/" };
+  const firstSegment = pathname.replace(/^\/+/, "").split(/[/?#]/)[0];
+  const key =
+    firstSegment === "en" || firstSegment === "fr" ? firstSegment : "pt";
+  const data = content[key] ?? content.pt;
+  return { lang: key, data };
 }
 ```
 
 > **Important:** This uses `useLocation().pathname`, **not** `useParams()`.
-> The routes are static (`/` and `/en`), so `useParams()` returns `{}` for both.
-> Any future change to dynamic routes (`/:lang`) must switch back to `useParams`.
+> The routes are static (`/`, `/en`, `/fr`), so `useParams()` returns `{}` for
+> all of them. Any future change to dynamic routes (`/:lang`) must switch back
+> to `useParams`.
+
+### Language switcher (dropdown)
+
+The previous two-button PT/EN "language slider" is now a single pill in
+[`src/components/Header.jsx`](src/components/Header.jsx) that opens a small
+PT / EN / FR menu. The trigger has a **fixed width** (`w-[132px]`) so opening
+or closing the menu never shifts any layout — it is also absolutely positioned
+top-right of the Hero, so it sits outside the document flow entirely.
+
+The dropdown is fully keyboard-accessible: the trigger is a `<button>` with
+`aria-haspopup` / `aria-expanded`, the menu is a `role="menu"` with
+`role="menuitemradio"` items, Arrow Up/Down/Home/End move between items, Enter
+activates the focused item, and Escape closes (returning focus to the trigger).
+Clicking an item uses `react-router` `<Link>`, so navigation stays route-based
+and [`LandingPage`](src/pages/LandingPage.jsx) remounts on the new `lang`.
 
 ### Clean remount on language change
 
@@ -139,15 +159,16 @@ export const CONTACT = {
 
 > ⚠️ **Before deploying**, replace `canonical: "https://poolboy.example.com/"`
 > with the real production domain. The placeholder also feeds the `<link
-rel="alternate" hrefLang="pt">` and `hrefLang="en"` tags in Seo.jsx.
+rel="alternate" hrefLang="pt">`, `hrefLang="en"`, `hrefLang="fr"`, and
+> `hrefLang="x-default"` tags in Seo.jsx.
 
-### `content` — the bilingual dictionary
+### `content` — the trilingual dictionary
 
 ```js
 export const content = {
   pt: {
     htmlLang: "pt",
-    nav: { ptLabel, enLabel, services, contact },
+    nav: { ptLabel, enLabel, frLabel, services, contact },
     seo: { title, description },
     brand: "PoolBoy",
     hero: { headline, cta, ctaNote, mobileNote },
@@ -158,23 +179,37 @@ export const content = {
   en: {
     /* same shape, English values */
   },
+  fr: {
+    /* same shape, French values */
+  },
 };
 ```
 
-Each top-level key (`pt`, `en`) must have **the same shape** so the components
-can read `data.hero.headline`, `data.services.kicker`, etc. without checking the
-language.
+Each top-level key (`pt`, `en`, `fr`) must have **the same shape** so the
+components can read `data.hero.headline`, `data.services.kicker`, etc. without
+checking the language.
+
+> **Note on the French copy:** the `fr` block is scaffolded with `[FR] ...`
+> placeholder strings (mirroring the English copy). Replace every `[FR] ...`
+> value with the final French translation before launch — search the repo for
+> `[FR]` to find them all, including a `fr` field on each of the 8 `SERVICES`
+> entries.
 
 ### Service cards
 
-The 8 service cards are defined once in the `SERVICES` array (shared by both
-languages) and referenced from `content.pt.services.services` and
-`content.en.services.services`:
+The 8 service cards are defined once in the `SERVICES` array (shared by all
+three languages) and referenced from `content.pt.services.services`,
+`content.en.services.services`, and `content.fr.services.services`:
 
 ```js
 const SERVICES = [
-  { id: "aspiracao",   pt: { title, subtitle }, en: { title, subtitle } },
-  { id: "filtros",     pt: { ... }, en: { ... } },
+  {
+    id: "aspiracao",
+    pt: { title, subtitle },
+    en: { title, subtitle },
+    fr: { title, subtitle },
+  },
+  { id: "filtros", pt: { ... }, en: { ... }, fr: { ... } },
   // …8 cards total
 ];
 ```
@@ -187,7 +222,7 @@ const SERVICES = [
 ### Adding a new service card
 
 1. Add an entry to `SERVICES` in [`content.js`](src/i18n/content.js) with a new
-   unique `id`, plus `pt` and `en` strings.
+   unique `id`, plus `pt`, `en`, and `fr` strings.
 2. Add a matching icon component + register it in the `ICONS` map in
    [`icons.jsx`](src/components/icons.jsx).
 3. The grid in [`Features.jsx`](src/components/Features.jsx) is generated from

@@ -2,6 +2,7 @@ import Seo from "../components/Seo.jsx";
 import Header from "../components/Header.jsx";
 import Hero from "../components/Hero.jsx";
 import Features from "../components/Features.jsx";
+import CtaSection from "../components/CtaSection.jsx";
 import Footer from "../components/Footer.jsx";
 import { useContent } from "../i18n/useContent.jsx";
 
@@ -22,6 +23,7 @@ export default function LandingPage() {
           <Header />
         </Hero>
         <Features />
+        <CtaSection />
       </main>
       <Footer />
     </div>
