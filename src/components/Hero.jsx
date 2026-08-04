@@ -9,7 +9,7 @@ import logo from "../assets/logo.png";
 //   ├─ "Language Slider": floating pill top-right
 //   └─ "Hero Content" glass card
 //      ├─ "Brand Row": logo (192px) + "PoolBoy" wordmark (Satoshi 111px 700)
-//      ├─ "Headline": Inter 25px 400, color #e2f6ffbd, center
+//      ├─ "Headline": single H1 with the primary key phrase (local SEO)
 //      ├─ "WhatsApp CTA": #25d366 pill, label "Fale Connosco !"
 //      └─ "Mobile Note": cyan pill (#7eebff17 / #7eebff29)
 //   └─ "Water Line": gradient divider
@@ -56,8 +56,10 @@ export default function Hero({ children }) {
           </p>
         </div>
 
-        {/* Headline */}
-        <h4
+        {/* SEO headline — single H1 with the primary key phrase as one natural
+            sentence (highest-weighted on-page SEO signal). Secondary keywords
+            live in seo.description, JSON-LD, the services cards, and footer. */}
+        <h1
           className="w-full text-center font-normal leading-[1.55em]"
           style={{
             fontFamily: '"Inter", "Inter Placeholder", sans-serif',
@@ -67,7 +69,7 @@ export default function Hero({ children }) {
           }}
         >
           {hero.headline}
-        </h4>
+        </h1>
 
         {/* WhatsApp CTA */}
         <a

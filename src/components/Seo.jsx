@@ -10,16 +10,32 @@ export default function Seo() {
   const { seo } = data;
 
   // LocalBusiness structured data (schema.org JSON-LD).
+  // areaServed lists every locality we target for local search; knowsAbout
+  // ties the business to the pool-care services (helps the services ↔ area
+  // association Google uses for local-pack ranking).
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "PoolBoy",
     url: CONTACT.canonical,
     description: seo.description,
-    areaServed: {
-      "@type": "Place",
-      name: "Carrasqueira e Lagoa de Albufeira",
-    },
+    areaServed: [
+      { "@type": "Place", name: "Carrasqueira" },
+      { "@type": "Place", name: "Lagoa de Albufeira" },
+      { "@type": "Place", name: "Sesimbra" },
+      { "@type": "Place", name: "Santana" },
+    ],
+    knowsAbout: [
+      "Limpeza de Piscinas",
+      "Manutenção de Piscinas",
+      "Reparação de Equipamentos",
+      "Tratamento Químico de Água",
+      "Recuperação de Água Verde",
+      "Abertura de Época",
+      "Invernagem",
+      "Check-up de Equipamentos",
+      "Otimização de Consumo Energético",
+    ],
     telephone: CONTACT.phoneHref.replace("tel:", ""),
   };
 

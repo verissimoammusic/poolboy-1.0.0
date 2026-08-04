@@ -113,14 +113,19 @@ export const content = {
       contact: "Contacto",
     },
     seo: {
-      title: "PoolBoy - Pool Care",
+      title: "PoolBoy — Limpeza de Piscinas na Lagoa de Albufeira e Sesimbra",
       description:
-        "Manutenção de Piscinas e Pool Care na região de Carrasqueira / Lagoa de Albufeira. Serviços profissionais de limpeza, tratamento de água e invernização.",
+        "Limpeza de Piscinas na Lagoa de Albufeira e Sesimbra. Manutenção, reparação, tratamento de água e invernagem. Serviços profissionais de Pool Care em Carrasqueira, Santana e região.",
     },
     brand: "PoolBoy",
     hero: {
+      // H1 — single natural sentence with the primary key phrase (matches
+      // "limpeza de piscinas" + "lagoa de albufeira" + "sesimbra").
+      // "Reparação" and secondary localities (Carrasqueira, Santana) are kept
+      // out of the hero — they're covered by seo.description, JSON-LD
+      // (areaServed / knowsAbout), the services cards, and footer.note.
       headline:
-        "Limpeza e Manutenção de Piscinas na zona da Carrasqueira, Lagoa de Albufeira e Santana",
+        "Limpeza e Manutenção de Piscinas na Lagoa de Albufeira e Sesimbra",
       cta: "Fale Connosco !",
       ctaNote: "Resposta rápida por WhatsApp",
       mobileNote: "Resposta rápida por WhatsApp",
@@ -138,7 +143,7 @@ export const content = {
       cta: "Fale Connosco !",
     },
     footer: {
-      note: "PoolBoy · Limpeza e Manutenção de Piscinas",
+      note: "PoolBoy · Limpeza e Manutenção de Piscinas · Lagoa de Albufeira, Sesimbra e região",
     },
   },
 
@@ -151,14 +156,16 @@ export const content = {
       contact: "Contact",
     },
     seo: {
-      title: "PoolBoy - Pool Care",
+      title: "PoolBoy — Pool Care in Sesimbra and Lagoa de Albufeira",
       description:
-        "Pool maintenance and Pool Care in the Carrasqueira / Lagoa de Albufeira area. Professional cleaning, water treatment and winterization services.",
+        "Pool Care and cleaning in Sesimbra and Lagoa de Albufeira. Maintenance, repair, water treatment and winterization. Professional pool services across Carrasqueira, Santana and the region.",
     },
     brand: "PoolBoy",
     hero: {
-      headline:
-        "Pool Cleaning and Maintenance in the Carrasqueira, Lagoa de Albufeira and Santana area",
+      // H1 — single natural sentence with the primary key phrase (matches
+      // "pool care" + "sesimbra" + "lagoa de albufeira"). "Repair" and secondary
+      // localities (Carrasqueira, Santana) are covered elsewhere.
+      headline: "Pool Care and Cleaning in Sesimbra and Lagoa de Albufeira",
       cta: "Get in Touch!",
       ctaNote: "Quick reply on WhatsApp",
       mobileNote: "Quick reply on WhatsApp",
@@ -176,7 +183,7 @@ export const content = {
       cta: "Get in Touch!",
     },
     footer: {
-      note: "PoolBoy · Pool Cleaning and Maintenance",
+      note: "PoolBoy · Pool Cleaning and Maintenance · Sesimbra, Lagoa de Albufeira and region",
     },
   },
 };

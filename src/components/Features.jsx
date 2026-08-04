@@ -4,7 +4,7 @@ import { ServiceIcon } from "./icons.jsx";
 // Services section:
 //   background-color #f7fbfc, max-width 1180px, padding 46px 24px, gap 28px
 //   └─ "Services Intro": max-width 720px, gap 10px
-//      └─ Kicker: "Serviços" — Inter 13px 700, color rgb(24,137,201), center
+//      └─ Kicker: "Serviços" — Inter 13px 700, color rgb(24,137,201), center, uppercase
 //      └─ Title: Satoshi 34px 700, letter-spacing -0.04em, color rgb(6,24,39)
 //      └─ Copy: "Máxima comodidade..." — color rgb(90,107,118), center
 //   └─ "Services Grid":
@@ -30,11 +30,13 @@ export default function Features() {
       {/* Intro */}
       <div className="flex w-full max-w-[720px] flex-col items-center gap-2.5 px-0">
         <p
-          className="text-center font-bold text-brand"
+          className="text-center font-bold text-brand uppercase"
           style={{
             fontFamily: '"Inter", "Inter Placeholder", sans-serif',
             fontSize: "13px",
             lineHeight: "1em",
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
           }}
         >
           {services.kicker}
