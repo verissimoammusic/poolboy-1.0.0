@@ -113,10 +113,9 @@ export default function CtaSection() {
       <div className="cta-content">
         {/* Kicker */}
         <p
-          className="text-center font-bold uppercase text-brand"
+          className="px-2 text-center text-xs font-bold uppercase text-water-500 md:text-sm"
           style={{
             fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-            fontSize: "15px",
             lineHeight: "1em",
             letterSpacing: "0.08em",
           }}
@@ -130,11 +129,13 @@ export default function CtaSection() {
             {/* Header */}
             <div className="chat-bubble-header">
               <div className="chat-bubble-avatar">
-                <IconWhatsApp className="h-6 w-6" />
+                <IconWhatsApp className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="flex flex-1 flex-col">
-                <span className="chat-bubble-sender">PoolBoy</span>
-                <span className="chat-bubble-online">online</span>
+                <span className="chat-bubble-sender text-sm md:text-base">
+                  PoolBoy
+                </span>
+                <span className="chat-bubble-online text-xs">online</span>
               </div>
             </div>
 
@@ -160,7 +161,7 @@ export default function CtaSection() {
                     className="chat-textarea"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    rows={3}
+                    rows={2}
                     spellCheck={false}
                   />
                 )}
@@ -176,8 +177,8 @@ export default function CtaSection() {
                 onClick={(e) => !hasText && e.preventDefault()}
               >
                 <svg
-                  width="26"
-                  height="26"
+                  width="22"
+                  height="22"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   aria-hidden="true"
@@ -193,9 +194,9 @@ export default function CtaSection() {
         <p className="cta-or-line">
           <span className="cta-or-text">{orLabel}</span>
           <a href={CONTACT.phoneHref} className="cta-phone-link">
-            <IconPhone className="h-5 w-5 shrink-0" />
-            <span>{contact.ctaPhone}</span>
-            <span className="cta-phone-number">
+            <IconPhone className="h-4 w-4 shrink-0 md:h-5 md:w-5" />
+            <span className="text-sm md:text-base">{contact.ctaPhone}</span>
+            <span className="cta-phone-number text-sm md:text-base">
               +351 {CONTACT.phoneDisplay}
             </span>
           </a>

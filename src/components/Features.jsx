@@ -28,12 +28,11 @@ export default function Features() {
       data-section="services"
     >
       {/* Intro */}
-      <div className="flex w-full max-w-[720px] flex-col items-center gap-2.5 px-0">
+      <div className="flex w-full max-w-[720px] flex-col items-center gap-2 md:gap-2.5 px-2 md:px-0">
         <p
-          className="text-center font-bold text-brand uppercase"
+          className="text-center text-xs font-bold text-water-500 uppercase md:text-sm"
           style={{
             fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-            fontSize: "13px",
             lineHeight: "1em",
             textTransform: "uppercase",
             letterSpacing: "0.08em",
@@ -42,10 +41,10 @@ export default function Features() {
           {services.kicker}
         </p>
         <h2
-          className="w-full text-center font-bold text-ink-900"
+          className="w-full text-center font-bold text-ocean-900"
           style={{
             fontFamily: '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
-            fontSize: "clamp(26px, 2.9vw, 34px)",
+            fontSize: "clamp(22px, 6vw, 34px)",
             letterSpacing: "-0.04em",
             lineHeight: "1.12em",
             textWrap: "balance",
@@ -54,8 +53,8 @@ export default function Features() {
           {services.title}
         </h2>
         <p
-          className="w-full text-center text-slate-500"
-          style={{ fontSize: "14px", lineHeight: "1.5em" }}
+          className="w-full text-center text-sm text-slate-500 md:text-base"
+          style={{ lineHeight: "1.5em" }}
         >
           {services.copy}
         </p>
@@ -74,11 +73,11 @@ export default function Features() {
               {/* Service text */}
               <div className="flex w-full flex-col items-start gap-1.5">
                 <h3
-                  className="w-full font-bold text-ink-900"
+                  className="w-full font-bold text-ocean-900"
                   style={{
                     fontFamily:
                       '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
-                    fontSize: "18px",
+                    fontSize: "clamp(15px, 4vw, 18px)",
                     letterSpacing: "-0.02em",
                     lineHeight: "1.2em",
                   }}
@@ -89,7 +88,7 @@ export default function Features() {
                   className="w-full text-slate-500"
                   style={{
                     fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-                    fontSize: "14px",
+                    fontSize: "clamp(12px, 3.5vw, 14px)",
                     fontWeight: 500,
                     lineHeight: "1.35em",
                   }}

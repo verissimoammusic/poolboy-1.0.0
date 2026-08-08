@@ -7,15 +7,15 @@ export default function Footer() {
   const { footer } = data;
 
   return (
-    <footer className="mx-auto flex w-full max-w-content justify-center px-6 pb-10 pt-2">
+    <footer className="mx-auto flex w-full max-w-content justify-center px-4 pb-8 pt-2 md:px-6 md:pb-10">
       <p
-        className="w-full max-w-[820px] text-center"
+        className="w-full max-w-[820px] px-1 text-center"
         style={{
           fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-          fontSize: "13px",
+          fontSize: "12px",
           fontWeight: 500,
           lineHeight: "1.4em",
-          color: "rgba(226, 246, 255, 0.42)",
+          color: "rgba(186, 230, 253, 0.35)",
         }}
       >
         {footer.note}

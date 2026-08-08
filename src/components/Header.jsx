@@ -182,7 +182,10 @@ export default function Header() {
   const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
 
   return (
-    <div ref={rootRef} className="absolute right-6 top-6 z-30">
+    <div
+      ref={rootRef}
+      className="absolute right-4 top-4 z-30 md:right-6 md:top-6"
+    >
       <button
         ref={triggerRef}
         type="button"
@@ -191,13 +194,13 @@ export default function Header() {
         aria-expanded={open}
         aria-controls="lang-menu"
         aria-label={`Language: ${current.label}. Change language`}
-        className="flex w-[76px] cursor-pointer items-center justify-between gap-2 rounded-full border border-cyan/20 bg-ink-900/50 px-2.5 py-[7px] text-[13px] font-bold uppercase leading-none tracking-wide text-white transition-colors hover:bg-ink-900/70"
-        style={{ top: 24, right: 24 }}
+        className="flex w-[64px] cursor-pointer items-center justify-between gap-1.5 rounded-full border border-cyan/20 bg-ink-900/50 px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-white transition-colors hover:bg-ink-900/70 md:w-[76px] md:gap-2 md:px-2.5 md:py-[7px] md:text-[13px]"
+        style={{ top: 16, right: 16 }}
       >
-        <span className="flex items-center gap-1.5">
+        <span className="flex items-center gap-1 md:gap-1.5">
           <span
             aria-hidden="true"
-            className="block h-[18px] w-[18px] shrink-0 overflow-hidden rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+            className="block h-[14px] w-[14px] shrink-0 overflow-hidden rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)] md:h-[18px] md:w-[18px]"
           >
             <current.Flag title={current.label} />
           </span>
@@ -207,14 +210,14 @@ export default function Header() {
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
-          width="14"
-          height="14"
+          width="12"
+          height="12"
           fill="none"
           stroke="currentColor"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`shrink-0 transition-transform duration-200 ${
+          className={`shrink-0 transition-transform duration-200 md:w-3.5 md:h-3.5 ${
             open ? "rotate-180" : ""
           }`}
         >
@@ -227,7 +230,7 @@ export default function Header() {
           id="lang-menu"
           role="menu"
           aria-label="Change language"
-          className="absolute right-0 top-full mt-2 flex w-[104px] flex-col gap-[3px] rounded-2xl border border-cyan/20 bg-ink-900/85 p-1.5 shadow-lang-active backdrop-blur-sm"
+          className="absolute right-0 top-full mt-1.5 flex w-[92px] flex-col gap-1 rounded-xl border border-cyan/20 bg-ink-900/85 p-1 shadow-lang-active backdrop-blur-sm md:mt-2 md:w-[104px] md:rounded-2xl md:gap-[3px] md:p-1.5"
         >
           {LANGUAGES.map((l, i) => {
             const active = l.code === lang;
@@ -243,7 +246,7 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                   title={l.label}
                   className={
-                    "flex w-full cursor-pointer items-center gap-2 rounded-xl px-2.5 py-2 text-[13px] font-bold uppercase leading-none tracking-wide text-white transition-colors " +
+                    "flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-white transition-colors md:gap-2 md:rounded-xl md:px-2.5 md:py-2 md:text-[13px] " +
                     (active
                       ? "bg-brand text-white shadow-lang-active"
                       : "bg-transparent text-white/90 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none")
@@ -251,13 +254,16 @@ export default function Header() {
                 >
                   <span
                     aria-hidden="true"
-                    className="block h-[18px] w-[18px] shrink-0 overflow-hidden rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+                    className="block h-[14px] w-[14px] shrink-0 overflow-hidden rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)] md:h-[18px] md:w-[18px]"
                   >
                     <l.Flag title={l.label} />
                   </span>
                   <span>{l.code}</span>
                   {active && (
-                    <span aria-hidden="true" className="ml-auto text-white">
+                    <span
+                      aria-hidden="true"
+                      className="ml-auto text-white text-xs md:text-sm"
+                    >
                       ✓
                     </span>
                   )}

@@ -173,13 +173,10 @@ export const content = {
     },
     brand: "PoolBoy",
     hero: {
-      // H1 — single natural sentence with the primary key phrase (matches
-      // "limpeza de piscinas" + "lagoa de albufeira" + "sesimbra").
-      // "Reparação" and secondary localities (Carrasqueira, Santana) are kept
-      // out of the hero — they're covered by seo.description, JSON-LD
-      // (areaServed / knowsAbout), the services cards, and footer.note.
-      headline:
-        "Limpeza e Manutenção de Piscinas na Lagoa de Albufeira e Sesimbra",
+      // Main heading — the primary service description (subtitle from original)
+      headline: "Limpeza e Manutenção de Piscinas",
+      // Location line — secondary text with geographic focus
+      location: "Lagoa de Albufeira, Sesimbra e região",
       cta: "Fale Connosco !",
       ctaNote: "Resposta rápida por WhatsApp",
       mobileNote: "Resposta rápida por WhatsApp",
@@ -249,10 +246,10 @@ export const content = {
     },
     brand: "PoolBoy",
     hero: {
-      // H1 — single natural sentence with the primary key phrase (matches
-      // "pool care" + "sesimbra" + "lagoa de albufeira"). "Repair" and secondary
-      // localities (Carrasqueira, Santana) are covered elsewhere.
-      headline: "Pool Care and Maintenance in Sesimbra and Lagoa de Albufeira",
+      // Main heading — the primary service description (subtitle from original)
+      headline: "Pool Care and Maintenance",
+      // Location line — secondary text with geographic focus
+      location: "Sesimbra, Lagoa de Albufeira and region",
       cta: "Get in Touch!",
       ctaNote: "Quick reply on WhatsApp",
       mobileNote: "Quick reply on WhatsApp",
@@ -326,10 +323,10 @@ export const content = {
     },
     brand: "PoolBoy",
     hero: {
-      // H1 — single natural sentence. Keep the primary key phrase + the two
-      // main localities (Sesimbra, Lagoa de Albufeira) in the French headline.
-      headline:
-        "Entretien et Maintenance de Piscine à Sesimbra et Lagoa de Albufeira",
+      // Main heading — the primary service description (subtitle from original)
+      headline: "Entretien et Maintenance de Piscine",
+      // Location line — secondary text with geographic focus
+      location: "Sesimbra, Lagoa de Albufeira et région",
       cta: "Contactez-nous !",
       ctaNote: "Réponse rapide sur WhatsApp",
       mobileNote: "Réponse rapide sur WhatsApp",
