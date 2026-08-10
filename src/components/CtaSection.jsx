@@ -191,16 +191,25 @@ export default function CtaSection() {
         </div>
 
         {/* "ou" + phone call link */}
-        <p className="cta-or-line">
-          <span className="cta-or-text">{orLabel}</span>
-          <a href={CONTACT.phoneHref} className="cta-phone-link">
-            <IconPhone className="h-4 w-4 shrink-0 md:h-5 md:w-5" />
-            <span className="text-sm md:text-base">{contact.ctaPhone}</span>
-            <span className="cta-phone-number text-sm md:text-base">
+        <div className="flex flex-col items-center gap-3 pt-1">
+          <div className="flex w-full items-center gap-3 text-white/40 text-xs font-medium uppercase tracking-[0.15em]">
+            <span className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-white/10" />
+            <span>{orLabel}</span>
+            <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+          </div>
+          <a
+            href={CONTACT.phoneHref}
+            className="group flex items-center gap-2.5 rounded-full border border-cyan/20 bg-white/5 px-5 py-2.5 text-white/80 transition-all hover:border-cyan/40 hover:bg-white/10 hover:text-white"
+          >
+            <IconPhone className="h-4 w-4 shrink-0 text-cyan-400 transition-colors group-hover:text-cyan-300 md:h-5 md:w-5" />
+            <span className="text-sm font-semibold md:text-base">
+              {contact.ctaPhone}
+            </span>
+            <span className="text-sm text-white/50 md:text-base">
               +351 {CONTACT.phoneDisplay}
             </span>
           </a>
-        </p>
+        </div>
       </div>
     </section>
   );
