@@ -1,6 +1,5 @@
 import { useContent } from "../i18n/useContent.jsx";
 import { ServiceIcon } from "./icons.jsx";
-import Header from "./Header.jsx";
 
 // Services section:
 //   background-color #f7fbfc, max-width 1180px, padding 46px 24px, gap 28px
@@ -28,9 +27,6 @@ export default function Features() {
       className="services-section relative w-full"
       data-section="services"
     >
-      {/* Language switcher — pinned to the top-right of the Services section */}
-      <Header />
-
       {/* Centered content wrapper — keeps content constrained while background is 100vw */}
       <div className="services-inner">
         {/* Intro */}

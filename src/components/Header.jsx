@@ -194,7 +194,7 @@ export default function Header() {
         aria-expanded={open}
         aria-controls="lang-menu"
         aria-label={`Language: ${current.label}. Change language`}
-        className="flex w-[64px] cursor-pointer items-center justify-between gap-1.5 rounded-full border border-ocean-900/10 bg-white/80 px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-ocean-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white md:w-[76px] md:gap-2 md:px-2.5 md:py-[7px] md:text-[13px]"
+        className="flex w-[64px] cursor-pointer items-center justify-between gap-1.5 rounded-full border border-cyan/20 bg-ocean-900/50 px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-white/90 shadow-sm transition-colors hover:bg-ocean-900/70 md:w-[76px] md:gap-2 md:px-2.5 md:py-[7px] md:text-[13px]"
         style={{ top: 16, right: 16 }}
       >
         <span className="flex items-center gap-1 md:gap-1.5">
@@ -230,7 +230,7 @@ export default function Header() {
           id="lang-menu"
           role="menu"
           aria-label="Change language"
-          className="absolute right-0 top-full mt-1.5 flex w-[92px] flex-col gap-1 rounded-xl border border-ocean-900/10 bg-white/95 p-1 shadow-card-shadow backdrop-blur-sm md:mt-2 md:w-[104px] md:rounded-2xl md:gap-[3px] md:p-1.5"
+          className="absolute right-0 top-full mt-1.5 flex w-[92px] flex-col gap-1 rounded-xl border border-cyan/20 bg-ocean-900/85 p-1 shadow-card-shadow backdrop-blur-sm md:mt-2 md:w-[104px] md:rounded-2xl md:gap-[3px] md:p-1.5"
         >
           {LANGUAGES.map((l, i) => {
             const active = l.code === lang;
@@ -249,7 +249,7 @@ export default function Header() {
                     "flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide transition-colors md:gap-2 md:rounded-xl md:px-2.5 md:py-2 md:text-[13px] " +
                     (active
                       ? "bg-brand text-white shadow-soft-glow"
-                      : "bg-transparent text-ocean-900/80 hover:bg-ocean-900/5 hover:text-ocean-900 focus:bg-ocean-900/5 focus:text-ocean-900 focus:outline-none")
+                      : "bg-transparent text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none")
                   }
                 >
                   <span

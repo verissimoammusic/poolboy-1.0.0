@@ -31,6 +31,42 @@
 }
 
 @layer components {
+  /* ---- Hero glass card ----
+     Glass-morphism card for the hero content:
+     border rgba(205,244,255,0.16), bg rgba(255,255,255,0.06),
+     radius 32px, shadow 0 30px 80px rgba(0,0,0,0.25) */
+  .hero-card {
+    @apply relative w-full max-w-[700px] rounded-hero border border-white/10 bg-white/[0.06] p-6 shadow-hero-card;
+  }
+  @media (max-width: 1199.98px) {
+    .hero-card {
+      @apply max-w-card rounded-hero-sm px-[18px] pt-[42px] pb-[22px];
+      gap: 16px;
+    }
+  }
+
+  /* ---- WhatsApp CTA (hero) ----
+     Green pill button, full-width up to 520px, with shadow */
+  .btn-wa {
+    @apply inline-flex w-full max-w-[520px] cursor-pointer items-center justify-center gap-3 rounded-full bg-[#25d366] px-6 py-[18px] text-[17px] font-bold leading-[1.1em] tracking-[-0.01em] text-[#061827] no-underline transition-transform duration-200 hover:scale-[1.02] active:scale-95;
+    box-shadow: 0 18px 46px rgba(37, 211, 102, 0.34);
+  }
+  @media (max-width: 1199.98px) {
+    .btn-wa {
+      @apply max-w-[322px] gap-2.5 px-[18px] py-4;
+    }
+  }
+
+  /* ---- Mobile note pill (hero) ---- */
+  .note-pill {
+    @apply inline-flex w-max items-center justify-center gap-2 rounded-full border border-cyan/[0.16] bg-cyan/[0.09] px-3 py-2 text-center text-[13px] font-medium leading-none text-white/70;
+  }
+  @media (max-width: 1199.98px) {
+    .note-pill {
+      @apply max-w-full px-2.5 py-[7px] text-xs;
+    }
+  }
+
   /* Centered content wrapper (max-width 1180px) */
   .container-content {
     @apply mx-auto w-full max-w-content px-6 md:px-8;
@@ -234,22 +270,6 @@
     line-height: 1.6em;
     color: rgba(224, 247, 250, 0.9);
     overflow: hidden;
-  }
-
-  /* Text opacity pulse — after typing finishes, the message pulses
-     gently to draw attention toward the send button */
-  .chat-text-pulse {
-    animation: chatTextPulse 2.5s ease-in-out infinite;
-  }
-
-  @keyframes chatTextPulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
   }
 
   /* Editable textarea — replaces message text once typing finishes.
@@ -503,150 +523,5 @@
   }
   75% {
     transform: translateX(8px) translateY(-3px);
-  }
-}
-
-/* ---- Hero section with video background ----
-   The hero section retains its relative positioning and overflow hidden.
-   A fullscreen looping video replaces the old underwater effects stack.
-   The video sits in .hero-fx (absolutely-positioned, pointer-events-none
-   layer) with a gradient overlay on top for text readability. */
-.caustics {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-/* Fallback background gradient used while the video loads and across
-   the full viewport so there's never a flash of empty background.
-   Uses brighter aquatic tones that match the PoolBoy brand. */
-.hero-bg {
-  background: linear-gradient(
-    180deg,
-    #0e7490 0%,
-    #0891b2 35%,
-    #06b6d4 65%,
-    #22d3ee 100%
-  );
-}
-
-.hero-fx {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* --- Fullscreen video background ----
-   The video fills the entire hero viewport, covering it like a background.
-   Object-fit: cover ensures it scales proportionally without distortion,
-   and the video is muted + looped for continuous ambient playback. */
-.hero-video-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
-/* Crossfade overlay that masks the loop cut — darkened to black so the
-   JS-driven opacity transition hides the visual discontinuity when the
-   video loops. Should sit between the video and the gradient overlay. */
-.hero-video-loop-fade {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: #000;
-  opacity: 0; /* JS toggles this at the loop boundary */
-}
-
-/* Gradient overlay on top of the video — very subtle darkening at the
-   bottom edge only so text remains readable without dimming the video. */
-.hero-video-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 85%,
-    rgba(0, 0, 0, 0.25) 95%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
-}
-
-/* --- Scroll-down chevron ----
-   A subtle, animated ↓ chevron anchored at the bottom centre of the
-   hero viewport.  Fades in after 2 s, then bounces gently to invite
-   the visitor to scroll.  Positioned inside .hero-fx so it stays on
-   top of the effects stack. */
-.hero-scroll-chevron {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  pointer-events: auto;
-  color: rgba(255, 255, 255, 0.65);
-  opacity: 0;
-  animation:
-    scrollChevronFadeIn 1s ease-out 2s forwards,
-    scrollChevronBounce 2s ease-in-out 3s infinite;
-  transition: color 0.3s ease;
-}
-
-.hero-scroll-chevron:hover {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-@keyframes scrollChevronFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-@keyframes scrollChevronBounce {
-  0%,
-  100% {
-    transform: translateX(-50%) translateY(0);
-  }
-  30% {
-    transform: translateX(-50%) translateY(-6px);
-  }
-  50% {
-    transform: translateX(-50%) translateY(0);
-  }
-  70% {
-    transform: translateX(-50%) translateY(-3px);
-  }
-}
-
-@media (max-width: 639.98px) {
-  .hero-scroll-chevron {
-    bottom: 24px;
-  }
-}
-
-/* Respect reduced-motion preferences — when the user prefers reduced
-   motion, hide the video (fallback gradient shows) and show the chevron
-   immediately without animation. The loop-fade overlay is also hidden
-   since it relies on JS-driven opacity transitions. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-video-bg {
-    display: none;
-  }
-  .hero-video-loop-fade {
-    display: none;
-  }
-  .hero-scroll-chevron {
-    opacity: 1;
-    animation: none;
   }
 }
