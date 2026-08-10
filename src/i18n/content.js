@@ -24,6 +24,38 @@ export const CONTACT = {
     en: "Good Morning, I need a [recurring cleaning / a one-time fix job / another service] on my pool in [region].",
     fr: "Bonjour, j'ai besoin [d'un nettoyage régulier / d'une réparation ponctuelle / d'autre service] pour ma piscine à [région].",
   },
+  // Chip-based message composer: the greeting is split around a single
+  // {service} placeholder. The visitor taps one of `serviceOptions` chips to
+  // fill it in — no typing required. The composed message is what gets sent
+  // to WhatsApp. Region was removed per design.
+  whatsappCompose: {
+    pt: {
+      before: "Bom dia, preciso de ",
+      after: " na minha piscina.",
+      closing: " Cumprimentos.",
+      options: [
+        "limpezas regulares",
+        "recuperação de água verde",
+        "um outro serviço",
+      ],
+    },
+    en: {
+      before: "Good Morning, I need ",
+      after: " on my pool.",
+      closing: " Best regards.",
+      options: ["recurring cleaning", "green water recovery", "a service"],
+    },
+    fr: {
+      before: "Bonjour, j'ai besoin ",
+      after: " pour ma piscine.",
+      closing: " Cordialement.",
+      options: [
+        "d'un nettoyage régulier",
+        "d'une récupération d'eau verte",
+        "d'un service",
+      ],
+    },
+  },
   canonical: "https://poolboy.pt/",
 };
 

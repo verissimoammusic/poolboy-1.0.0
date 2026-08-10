@@ -42,13 +42,35 @@
   }
 
   /* ---- Services section ----
-     bg #f0f9ff (light water theme), max-width 1180px, padding 46px 24px */
+     Full-viewport background (100vw) with centered content inside.
+     bg-paper fills the entire viewport width; the inner container-content
+     constrains text and grid to the standard max-width. */
   .services-section {
-    @apply flex flex-col items-center gap-7 bg-paper py-[46px] px-6 md:gap-7;
+    @apply flex flex-col items-center bg-paper;
   }
   @media (max-width: 1199.98px) {
     .services-section {
-      @apply max-w-card gap-6 px-4 py-9;
+      @apply gap-0;
+    }
+  }
+  @media (max-width: 639.98px) {
+    .services-section {
+      @apply gap-0;
+    }
+  }
+
+  /* Inner wrapper that constrains content while parent background is 100vw */
+  .services-inner {
+    @apply flex w-full max-w-content flex-col items-center gap-7 px-6 py-[46px] md:gap-7;
+  }
+  @media (max-width: 1199.98px) {
+    .services-inner {
+      @apply gap-6 px-4 py-9;
+    }
+  }
+  @media (max-width: 639.98px) {
+    .services-inner {
+      @apply gap-4 py-7;
     }
   }
 
@@ -71,6 +93,20 @@
   @media (max-width: 1199.98px) {
     .service-card {
       @apply h-min min-h-0;
+    }
+  }
+
+  /* Mobile < 640px: compact card layout with icon inline */
+  @media (max-width: 639.98px) {
+    .service-card {
+      @apply flex-row items-center gap-3 rounded-2xl p-4;
+    }
+    .icon-bubble {
+      @apply h-10 w-10 rounded-xl;
+    }
+    .icon-bubble svg {
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -124,10 +160,35 @@
       inset 0 1px 0 rgba(34, 211, 238, 0.05);
   }
 
-  /* Bubble header — avatar + sender + phone number */
+  /* Bubble header — avatar + sender + WhatsApp button */
   .chat-bubble-header {
     @apply flex items-center gap-3.5 px-7 pt-6 pb-3.5;
     border-bottom: 1px solid rgba(34, 211, 238, 0.06);
+  }
+
+  /* WhatsApp button — floating in the top-right corner of the chat header.
+     A pill-shaped button with icon + "WhatsApp" label. Uses the same
+     WhatsApp green as the avatar for consistency. */
+  .chat-whatsapp-btn {
+    @apply flex shrink-0 cursor-pointer items-center gap-1.5 self-start rounded-full border-none text-white no-underline transition-all duration-200;
+    background: rgba(37, 211, 102, 0.13);
+    color: #25d366;
+    padding: 6px 14px 6px 10px;
+    margin-top: -2px;
+    margin-right: -6px;
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .chat-whatsapp-btn:hover {
+    background: rgba(37, 211, 102, 0.22);
+    color: #4ae382;
+    transform: scale(1.05);
+    box-shadow: 0 0 14px rgba(37, 211, 102, 0.25);
+  }
+  .chat-whatsapp-btn:active {
+    transform: scale(0.96);
   }
 
   .chat-bubble-avatar {
@@ -154,12 +215,13 @@
   }
 
   /* Message body — flex row: text area + send button
-     Default height is 140px (when section is fully visible). JS overrides
+     Default min-height is 140px (when section is fully visible). JS overrides
      this inline based on scroll position, shrinking it as the section goes
-     out of view. */
+     out of view. The body grows with its content (no internal scroll) so a
+     long message expands the bubble rather than scrolling inside it. */
   .chat-bubble-body {
     @apply flex items-end gap-4 px-7 py-5;
-    height: 140px;
+    min-height: 140px;
     overflow: hidden;
   }
 
@@ -190,10 +252,11 @@
     }
   }
 
-  /* Editable textarea — replaces message text once typing finishes */
+  /* Editable textarea — replaces message text once typing finishes.
+     Grows vertically with its content (JS sets height from scrollHeight);
+     overflow hidden so it never shows an internal scrollbar. */
   .chat-textarea {
     width: 100%;
-    height: 100%;
     resize: none;
     border: none;
     outline: none;
@@ -203,18 +266,113 @@
     font-weight: 400;
     line-height: 1.6em;
     color: rgba(224, 247, 250, 0.95);
-    overflow-y: auto;
+    overflow: hidden;
   }
 
   .chat-textarea::placeholder {
     color: rgba(224, 247, 250, 0.35);
   }
 
+  /* --- Service chips (tap-to-compose) ---
+     Round pill buttons that appear on their own row between the "before"
+     and "after" text. During the reveal phase, chips pop in one-by-one
+     like characters being typed (driven by JS chipRevealCount). */
+  .chat-compose {
+    display: block;
+    line-height: 1.6em;
+  }
+
+  .chat-sentence {
+    display: block;
+  }
+
+  /* After text ("na minha piscina.") on its own line below chips. */
+  .chat-sentence-after {
+    display: block;
+    margin-top: 0.3em;
+  }
+
+  /* Chips row — dedicated line between before / after text.
+     On narrow mobile screens, chips scroll horizontally instead of wrapping
+     so they don't get cut off or overflow the bubble. */
+  .chat-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  @media (max-width: 639.98px) {
+    .chat-chip {
+      font-size: 13px;
+      padding: 6px 12px;
+    }
+  }
+
+  .chat-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-family: "Inter", "Inter Placeholder", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2em;
+    white-space: nowrap;
+    cursor: default; /* becomes pointer only in "choosing" phase */
+    color: rgba(37, 211, 102, 0.95);
+    background: rgba(37, 211, 102, 0.1);
+    border: 1px solid rgba(37, 211, 102, 0.35);
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease;
+  }
+
+  /* Chip becomes visible (JS toggles this class when it's that chip's turn) */
+  .chat-chip-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Interactive state — only during "choosing" phase (pointer + hover) */
+  .chat-chip-interactive {
+    cursor: pointer;
+  }
+  .chat-chip-interactive:hover {
+    background: rgba(37, 211, 102, 0.18);
+    border-color: rgba(37, 211, 102, 0.6);
+  }
+  .chat-chip-interactive:active {
+    transform: scale(0.95);
+  }
+
+  /* Selected chip — a soft filled tint rather than a bright gradient, so it
+     reads as "chosen" without shouting. */
+  .chat-chip-active,
+  .chat-chip-active:hover {
+    background: rgba(37, 211, 102, 0.22);
+    border-color: rgba(37, 211, 102, 0.7);
+    color: rgba(224, 247, 250, 0.98);
+    box-shadow: inset 0 0 0 1px rgba(37, 211, 102, 0.25);
+  }
+
+  /* Sign-off line — its own paragraph below the chips row. */
+  .chat-closing {
+    display: block;
+    margin-top: 0.6em;
+  }
+
   /* Send button — round cyan pill hover + active states */
   .chat-send-btn {
     @apply flex h-12 min-h-12 w-12 min-w-12 shrink-0 cursor-pointer items-center justify-center self-end rounded-full border-none text-white;
-    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
-    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+    background: linear-gradient(135deg, #1da851 0%, #25d366 100%);
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease,
@@ -223,21 +381,57 @@
 
   .chat-send-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.45);
-    background: linear-gradient(135deg, #0891b2 0%, #22d3ee 100%);
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.45);
+    background: linear-gradient(135deg, #1da851 0%, #4ae382 100%);
   }
 
   .chat-send-btn:active {
     transform: scale(0.95);
   }
 
+  /* Attention pulse — after the user picks an option, the send button gently
+     pulses (scale + glow) to hint that it's ready to send. */
+  .chat-send-hint {
+    animation: sendHint 1.6s ease-in-out infinite;
+  }
+
+  @keyframes sendHint {
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+    }
+    50% {
+      transform: scale(1.08);
+      box-shadow: 0 4px 18px rgba(37, 211, 102, 0.55);
+    }
+  }
+
   @media (max-width: 639.98px) {
     .chat-bubble-header {
       @apply px-5 pt-5 pb-3;
     }
+    .chat-whatsapp-btn {
+      padding: 5px 10px 5px 8px;
+      font-size: 12px;
+      margin-right: -4px;
+    }
     .chat-bubble-body {
-      @apply px-5 py-4;
-      height: 120px;
+      @apply py-4;
+      padding-left: 16px;
+      padding-right: 16px;
+      gap: 10px;
+      /* No fixed height — grows with content. The scroll-driven min-height
+         from JS still applies a lower bound when the section is visible. */
+    }
+    .chat-chips-row {
+      gap: 6px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    .chat-chip {
+      font-size: 13px;
+      padding: 6px 12px;
     }
     .chat-message-area {
       font-size: 16px;
@@ -250,38 +444,26 @@
     }
   }
 
-  /* --- Chat typing animation ---
-     A gentle typing indicator shown before the compose box appears.
-     Fades out when typing finishes. Three dots with staggered bounce. */
-  .chat-typing-badge {
-    @apply flex items-center gap-2.5 self-start px-4 py-2.5;
+  /* --- Chat typing bar ---
+     A blinking vertical bar shown during the "typing" phase before the
+     message reveals. Replaces the old bouncing-dots animation. */
+  .chat-typing-bar {
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1;
+    color: rgba(34, 211, 238, 0.8);
+    animation: chatBarBlink 0.7s step-end infinite;
+    user-select: none;
   }
 
-  .chat-typing-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(34, 211, 238, 0.5);
-    animation: typingBounce 1.4s ease-in-out infinite;
-  }
-
-  .chat-typing-dot:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .chat-typing-dot:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-
-  @keyframes typingBounce {
+  @keyframes chatBarBlink {
     0%,
-    60%,
     100% {
-      transform: translateY(0);
-      opacity: 0.4;
-    }
-    30% {
-      transform: translateY(-8px);
       opacity: 1;
+    }
+    50% {
+      opacity: 0;
     }
   }
 }
@@ -386,7 +568,7 @@
 
 /* --- Scroll-down chevron ----
    A subtle, animated ↓ chevron anchored at the bottom centre of the
-   hero viewport.  Fades in after 2 s, then bounces gently to invite
+   hero viewport.  Fades in after 2 s, then bounces gently to invite
    the visitor to scroll.  Positioned inside .hero-fx so it stays on
    top of the effects stack. */
 .hero-scroll-chevron {

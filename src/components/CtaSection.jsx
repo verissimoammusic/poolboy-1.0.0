@@ -14,37 +14,62 @@ import { IconWhatsApp, IconPhone } from "./icons.jsx";
 //        ou  📞 Ligar +351 960 363 769
 
 // Animation timing (ms)
-const TYPING_DURATION = 2000;
-const CHAR_INTERVAL_FIRST = 30;
-const CHAR_INTERVAL_REPLAY = 12; // faster on replay
-const PULSE_DELAY = 1500;
+const B_TYPING_DURATION = 600;
+const CHAR_INTERVAL = 22;
+const CHIP_INTERVAL = 300;
+const PULSE_DELAY = 300;
+
+// Phase enum — avoids string typos
+const PHASE = {
+  IDLE: "idle",
+  TYPING: "typing",
+  BEFORE: "before",
+  CHIPS: "chips",
+  AFTER: "after",
+  CLOSING: "closing",
+  CHOOSING: "choosing",
+};
 
 export default function CtaSection() {
   const { lang, data } = useContent();
   const { contact } = data;
-  const defaultMsg =
-    CONTACT.whatsappPlaceholder[lang] ?? CONTACT.whatsappPlaceholder.pt;
+  const compose = CONTACT.whatsappCompose[lang] ?? CONTACT.whatsappCompose.pt;
 
-  const [phase, setPhase] = useState("idle"); // "idle" | "typing" | "revealing" | "pulsing"
-  const [charCount, setCharCount] = useState(0);
-  const [message, setMessage] = useState("");
+  const [phase, setPhase] = useState(PHASE.IDLE);
+
+  // Each typed segment has its own progress — no cross-phase interference.
+  const [beforeText, setBeforeText] = useState("");
+  const [chipRevealCount, setChipRevealCount] = useState(0);
+  const [afterText, setAfterText] = useState("");
+  const [closingText, setClosingText] = useState("");
+
+  const [selected, setSelected] = useState(0);
+  const [interacted, setInteracted] = useState(false);
+
   const timerRef = useRef(null);
-  const textareaRef = useRef(null);
   const sectionRef = useRef(null);
   const playCountRef = useRef(0);
 
-  // ── Reset animation state ──
+  const clearTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  // ── Reset ──
   const resetAnimation = useCallback(() => {
-    clearTimeout(timerRef.current);
-    setPhase("idle");
-    setCharCount(0);
-    setMessage("");
+    clearTimer();
+    setPhase(PHASE.IDLE);
+    setBeforeText("");
+    setChipRevealCount(0);
+    setAfterText("");
+    setClosingText("");
+    setSelected(0);
+    setInteracted(false);
   }, []);
 
-  // ── Scroll-driven chatbox height ──
-  // Tracks the section's visible ratio using getBoundingClientRect on every
-  // scroll frame and directly sets the height in pixels on .chat-bubble-body.
-  // The box starts at 0px when off-screen and reaches 140px when fully visible.
+  // ── Scroll-driven chatbox min-height ──
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -54,13 +79,10 @@ export default function CtaSection() {
     function updateScale() {
       const rect = el.getBoundingClientRect();
       const viewportH = window.innerHeight;
-      // How much of the section is visible (clamped 0–1)
       const visible = Math.min(rect.bottom, viewportH) - Math.max(rect.top, 0);
       const ratio = Math.min(1, Math.max(0, visible / rect.height));
-      // Smoothstep easing for a natural feel
       const eased = ratio * ratio * (3 - 2 * ratio);
-      // Scale from 0px → 140px based on how visible the section is
-      chatBody.style.height = Math.round(eased * 140) + "px";
+      chatBody.style.minHeight = Math.round(eased * 140) + "px";
       rafId = requestAnimationFrame(updateScale);
     }
 
@@ -68,7 +90,7 @@ export default function CtaSection() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // ── IntersectionObserver: start animation when section enters viewport ──
+  // ── IntersectionObserver ──
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -76,7 +98,7 @@ export default function CtaSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           resetAnimation();
-          requestAnimationFrame(() => setPhase("typing"));
+          requestAnimationFrame(() => setPhase(PHASE.TYPING));
         } else {
           resetAnimation();
         }
@@ -87,42 +109,87 @@ export default function CtaSection() {
     return () => observer.disconnect();
   }, [resetAnimation]);
 
-  // ── Typing / revealing / pulsing state machine ──
+  // ── State machine ──
+  // Each phase advances independently, using segment-specific state.
   useEffect(() => {
-    if (phase === "typing") {
-      timerRef.current = setTimeout(() => {
-        setCharCount(0);
-        setPhase("revealing");
-      }, TYPING_DURATION);
-    } else if (phase === "revealing") {
-      const interval =
-        playCountRef.current > 0 ? CHAR_INTERVAL_REPLAY : CHAR_INTERVAL_FIRST;
-      if (charCount < defaultMsg.length) {
+    clearTimer();
+
+    if (phase === PHASE.TYPING) {
+      timerRef.current = setTimeout(
+        () => setPhase(PHASE.BEFORE),
+        B_TYPING_DURATION,
+      );
+    } else if (phase === PHASE.BEFORE) {
+      const text = compose.before;
+      if (beforeText.length < text.length) {
         timerRef.current = setTimeout(() => {
-          const next = charCount + 1;
-          setCharCount(next);
-          setMessage(defaultMsg.slice(0, next));
-        }, interval);
+          setBeforeText(text.slice(0, beforeText.length + 1));
+        }, CHAR_INTERVAL);
+      } else {
+        setPhase(PHASE.CHIPS);
+      }
+    } else if (phase === PHASE.CHIPS) {
+      if (chipRevealCount < compose.options.length) {
+        timerRef.current = setTimeout(() => {
+          setChipRevealCount((c) => c + 1);
+        }, CHIP_INTERVAL);
+      } else {
+        setPhase(PHASE.AFTER);
+      }
+    } else if (phase === PHASE.AFTER) {
+      const text = compose.after;
+      if (afterText.length < text.length) {
+        timerRef.current = setTimeout(() => {
+          setAfterText(text.slice(0, afterText.length + 1));
+        }, CHAR_INTERVAL);
+      } else {
+        setPhase(PHASE.CLOSING);
+      }
+    } else if (phase === PHASE.CLOSING) {
+      const text = compose.closing;
+      if (closingText.length < text.length) {
+        timerRef.current = setTimeout(() => {
+          setClosingText(text.slice(0, closingText.length + 1));
+        }, CHAR_INTERVAL);
       } else {
         playCountRef.current += 1;
-        timerRef.current = setTimeout(() => setPhase("pulsing"), PULSE_DELAY);
+        timerRef.current = setTimeout(
+          () => setPhase(PHASE.CHOOSING),
+          PULSE_DELAY,
+        );
       }
     }
-    return () => clearTimeout(timerRef.current);
-  }, [phase, charCount, defaultMsg]);
 
-  useEffect(() => {
-    if (phase === "pulsing" && textareaRef.current) {
-      textareaRef.current.focus();
-      const len = textareaRef.current.value.length;
-      textareaRef.current.setSelectionRange(len, len);
-    }
-  }, [phase]);
+    return clearTimer;
+  }, [phase, beforeText, chipRevealCount, afterText, closingText, compose]);
 
+  // The composed WhatsApp message.
+  const message =
+    selected === null
+      ? ""
+      : compose.before +
+        compose.options[selected] +
+        compose.after +
+        compose.closing;
   const waLink = `${CONTACT.whatsappBase}?text=${encodeURIComponent(message)}`;
-  const hasText = message.trim().length > 0;
+  const hasText = selected !== null;
 
   const orLabel = lang === "pt" ? "ou" : lang === "fr" ? "ou" : "or";
+
+  // Show cursor on a segment while it's still being typed
+  const showBeforeCursor = phase === PHASE.BEFORE;
+  const showChips =
+    phase === PHASE.CHIPS ||
+    phase === PHASE.AFTER ||
+    phase === PHASE.CLOSING ||
+    phase === PHASE.CHOOSING;
+  const showAfterCursor = phase === PHASE.AFTER;
+  const showAfter =
+    phase === PHASE.AFTER ||
+    phase === PHASE.CLOSING ||
+    phase === PHASE.CHOOSING;
+  const showClosingCursor = phase === PHASE.CLOSING;
+  const showClosing = phase === PHASE.CLOSING || phase === PHASE.CHOOSING;
 
   return (
     <section
@@ -131,11 +198,9 @@ export default function CtaSection() {
       className="cta-section mx-auto"
       data-section="contact"
     >
-      {/* Soft divider */}
       <div className="h-px w-full max-w-[720px] bg-gradient-to-r from-transparent via-cyan/[0.46] to-transparent" />
 
       <div className="cta-content">
-        {/* Kicker */}
         <p
           className="px-2 text-center text-xs font-bold uppercase text-water-500 md:text-sm"
           style={{
@@ -147,10 +212,8 @@ export default function CtaSection() {
           {contact.kicker}
         </p>
 
-        {/* ── Chat compose bubble ── */}
         <div className="chat-bubble-wrapper">
           <div className="chat-bubble">
-            {/* Header */}
             <div className="chat-bubble-header">
               <div className="chat-bubble-avatar">
                 <IconWhatsApp className="h-5 w-5 md:h-6 md:w-6" />
@@ -161,42 +224,103 @@ export default function CtaSection() {
                 </span>
                 <span className="chat-bubble-online text-xs">online</span>
               </div>
-            </div>
-
-            {/* Message area + send button */}
-            <div className="chat-bubble-body">
-              <div
-                className={`chat-message-area ${phase === "pulsing" ? "chat-text-pulse" : ""}`}
-              >
-                {phase === "typing" || phase === "idle" ? (
-                  <span className="chat-typing">
-                    <span className="chat-dot" />
-                    <span className="chat-dot" />
-                    <span className="chat-dot" />
-                  </span>
-                ) : phase === "revealing" ? (
-                  <span>
-                    {message}
-                    <span className="chat-cursor" />
-                  </span>
-                ) : (
-                  <textarea
-                    ref={textareaRef}
-                    className="chat-textarea"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows={2}
-                    spellCheck={false}
-                  />
-                )}
-              </div>
-
-              {/* WA send button */}
+              {/* WhatsApp button — top-right corner of the chatbox header */}
               <a
                 href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`chat-send-btn ${hasText ? "chat-send-active" : "chat-send-disabled"}`}
+                className="chat-whatsapp-btn"
+                aria-label="WhatsApp"
+                onClick={(e) => !hasText && e.preventDefault()}
+              >
+                {/* External-link / open-app icon — box with arrow */}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+                <span>WhatsApp</span>
+              </a>
+            </div>
+
+            <div className="chat-bubble-body">
+              <div className="chat-message-area">
+                {/* Typing bar cursor */}
+                {(phase === PHASE.TYPING || phase === PHASE.IDLE) && (
+                  <span className="chat-typing-bar" aria-label="typing">
+                    |
+                  </span>
+                )}
+
+                {/* Composed message */}
+                {phase !== PHASE.TYPING && phase !== PHASE.IDLE && (
+                  <span className="chat-compose">
+                    {/* Line 1: "Bom dia, preciso de " */}
+                    <span className="chat-sentence">
+                      <span>{beforeText}</span>
+                      {showBeforeCursor && <span className="chat-cursor" />}
+                    </span>
+
+                    {/* Line 2: chips */}
+                    {showChips && (
+                      <span
+                        className="chat-chips-row"
+                        role="group"
+                        aria-label={contact.cta}
+                      >
+                        {compose.options.map((opt, i) => (
+                          <button
+                            key={opt}
+                            type="button"
+                            className={`chat-chip ${phase === PHASE.CHOOSING ? "chat-chip-interactive" : ""} ${selected === i ? "chat-chip-active" : ""} ${i < chipRevealCount ? "chat-chip-visible" : ""}`}
+                            aria-pressed={selected === i}
+                            disabled={phase !== PHASE.CHOOSING}
+                            onClick={() => {
+                              if (phase !== PHASE.CHOOSING) return;
+                              setSelected(i);
+                              setInteracted(true);
+                            }}
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </span>
+                    )}
+
+                    {/* Line 3: "na minha piscina." */}
+                    {showAfter && (
+                      <span className="chat-sentence-after">
+                        <span>{afterText}</span>
+                        {showAfterCursor && <span className="chat-cursor" />}
+                      </span>
+                    )}
+
+                    {/* Line 4: "Cumprimentos." */}
+                    {showClosing && (
+                      <span className="chat-closing">
+                        <span>{closingText}</span>
+                        {showClosingCursor && <span className="chat-cursor" />}
+                      </span>
+                    )}
+                  </span>
+                )}
+              </div>
+
+              <a
+                href={waLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`chat-send-btn ${hasText ? "chat-send-active" : "chat-send-disabled"} ${interacted ? "chat-send-hint" : ""}`}
                 aria-label={contact.cta}
                 onClick={(e) => !hasText && e.preventDefault()}
               >
@@ -214,7 +338,6 @@ export default function CtaSection() {
           </div>
         </div>
 
-        {/* "ou" + phone call link */}
         <div className="flex flex-col items-center gap-3 pt-1">
           <div className="flex w-full items-center gap-3 text-white/40 text-xs font-medium uppercase tracking-[0.15em]">
             <span className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-white/10" />

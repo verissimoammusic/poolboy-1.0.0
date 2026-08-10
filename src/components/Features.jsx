@@ -25,84 +25,90 @@ export default function Features() {
   return (
     <section
       id="services"
-      className="services-section relative mx-auto"
+      className="services-section relative w-full"
       data-section="services"
     >
       {/* Language switcher — pinned to the top-right of the Services section */}
       <Header />
 
-      {/* Intro */}
-      <div className="flex w-full max-w-[720px] flex-col items-center gap-2 md:gap-2.5 px-2 md:px-0">
-        <p
-          className="text-center text-xs font-bold text-water-500 uppercase md:text-sm"
-          style={{
-            fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-            lineHeight: "1em",
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-          }}
-        >
-          {services.kicker}
-        </p>
-        <h2
-          className="w-full text-center font-bold text-ocean-900"
-          style={{
-            fontFamily: '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
-            fontSize: "clamp(22px, 6vw, 34px)",
-            letterSpacing: "-0.04em",
-            lineHeight: "1.12em",
-            textWrap: "balance",
-          }}
-        >
-          {services.title}
-        </h2>
-        <p
-          className="w-full text-center text-sm text-slate-500 md:text-base"
-          style={{ lineHeight: "1.5em" }}
-        >
-          {services.copy}
-        </p>
-      </div>
+      {/* Centered content wrapper — keeps content constrained while background is 100vw */}
+      <div className="services-inner">
+        {/* Intro */}
+        <div className="flex w-full max-w-[720px] flex-col items-center gap-2 md:gap-2.5 px-2 md:px-0">
+          <p
+            className="text-center text-xs font-bold text-water-500 uppercase md:text-sm"
+            style={{
+              fontFamily: '"Inter", "Inter Placeholder", sans-serif',
+              lineHeight: "1em",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+            }}
+          >
+            {services.kicker}
+          </p>
+          <h2
+            className="w-full text-center font-bold text-ocean-900"
+            style={{
+              fontFamily:
+                '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
+              fontSize: "clamp(22px, 6vw, 34px)",
+              letterSpacing: "-0.04em",
+              lineHeight: "1.12em",
+              textWrap: "balance",
+            }}
+          >
+            {services.title}
+          </h2>
+          <p
+            className="w-full text-center text-sm text-slate-500 md:text-base"
+            style={{ lineHeight: "1.5em" }}
+          >
+            {services.copy}
+          </p>
+        </div>
 
-      {/* Grid */}
-      <div className="services-grid">
-        {list.map((s) => {
-          const { title, subtitle } = s[langKey];
-          return (
-            <article key={s.id} className="service-card">
-              {/* Icon bubble */}
-              <div className="icon-bubble">
-                <ServiceIcon id={s.id} />
-              </div>
-              {/* Service text */}
-              <div className="flex w-full flex-col items-start gap-1.5">
-                <h3
-                  className="w-full font-bold text-ocean-900"
-                  style={{
-                    fontFamily:
-                      '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
-                    fontSize: "clamp(15px, 4vw, 18px)",
-                    letterSpacing: "-0.02em",
-                    lineHeight: "1.2em",
-                  }}
-                >
-                  {title}
-                </h3>
-                <p
-                  className="w-full text-slate-500"
-                  style={{
-                    fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-                    fontSize: "clamp(12px, 3.5vw, 14px)",
-                    fontWeight: 500,
-                    lineHeight: "1.35em",
-                  }}
-                >
-                  {subtitle}
-                </p>
-              </div>
-            </article>
-          );
-        })}
+        {/* Grid */}
+        <div className="services-grid">
+          {list.map((s) => {
+            const { title, subtitle } = s[langKey];
+            return (
+              <article key={s.id} className="service-card">
+                {/* Icon bubble */}
+                <div className="icon-bubble">
+                  <ServiceIcon id={s.id} />
+                </div>
+                {/* Service text */}
+                <div className="flex w-full flex-col items-start gap-1.5">
+                  <h3
+                    className="w-full font-bold text-ocean-900"
+                    style={{
+                      fontFamily:
+                        '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
+                      fontSize: "clamp(15px, 4vw, 18px)",
+                      letterSpacing: "-0.02em",
+                      lineHeight: "1.2em",
+                    }}
+                  >
+                    {title}
+                  </h3>
+                  <p
+                    className="w-full text-slate-500"
+                    style={{
+                      fontFamily: '"Inter", "Inter Placeholder", sans-serif',
+                      fontSize: "clamp(12px, 3.5vw, 14px)",
+                      fontWeight: 500,
+                      lineHeight: "1.35em",
+                    }}
+                  >
+                    {subtitle}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {/* End centered content wrapper */}
       </div>
     </section>
   );
