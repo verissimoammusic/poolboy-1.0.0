@@ -10,10 +10,8 @@ import heroVideoMobile from "../assets/videos-mobile/video1.mp4";
  * sits on top to ensure text readability.
  *
  * Uses the mobile video on viewports < 640px and the desktop video on 640px+.
- * The `<source media="...">` attribute is **not supported** on `<video>`
- * elements (it was removed from the HTML spec and only works inside
- * `<picture>`), so we select the correct source via `window.matchMedia`
- * and set it directly on the video element.
+ * Two `<source>` elements with `media` queries let the browser pick the
+ * correct video without JS source-switching (works in all modern browsers).
  *
  * Looping behaviour:
  *   In the last ~0.4 s of each cycle the video fades into a solid dark
@@ -34,30 +32,24 @@ export default function HeroEffects() {
     const fade = fadeRef.current;
     if (!video || !fade) return;
 
-    const mobileQuery = window.matchMedia("(max-width: 639px)");
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
-
-    /* ── determine video duration once it's loaded ── */
-    const getDuration = () => {
-      // FFmpeg xfade output is 2.708 s; round to avoid floating drift
-      return typeof video.duration === "number" && isFinite(video.duration)
-        ? video.duration
-        : 2.7;
-    };
 
     /* ── crossfade logic ── */
     let rafId = null;
 
     const tick = () => {
       if (!video || prefersReduced.matches) return;
-      const dur = getDuration();
+      const dur =
+        typeof video.duration === "number" && isFinite(video.duration)
+          ? video.duration
+          : 2.7;
       if (dur <= 0) return;
 
       const remaining = dur - video.currentTime;
-      const fadeInDuration = 0.3; // s to fade up after loop
-      const fadeOutStart = 0.4; // s from end to start fading out
+      const fadeInDuration = 0.3;
+      const fadeOutStart = 0.4;
 
       let opacity = 0;
 
@@ -73,23 +65,10 @@ export default function HeroEffects() {
       rafId = requestAnimationFrame(tick);
     };
 
-    /* ── source switching ── */
-    const setSource = () => {
-      const src = mobileQuery.matches ? heroVideoMobile : heroVideoDesktop;
-      if (video.src !== src) {
-        video.src = src;
-        video.load();
-        video.play().catch(() => {});
-      }
-    };
-
     /* ── wire up ── */
-    setSource();
     rafId = requestAnimationFrame(tick);
-    mobileQuery.addEventListener("change", setSource);
 
     return () => {
-      mobileQuery.removeEventListener("change", setSource);
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
@@ -106,7 +85,10 @@ export default function HeroEffects() {
         playsInline
         poster={heroVideoDesktop}
         preload="auto"
-      />
+      >
+        <source src={heroVideoMobile} media="(max-width: 639px)" />
+        <source src={heroVideoDesktop} media="(min-width: 640px)" />
+      </video>
 
       {/* Crossfade overlay that masks the loop cut */}
       <div ref={fadeRef} className="hero-video-loop-fade" />
