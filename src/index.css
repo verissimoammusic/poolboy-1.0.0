@@ -199,166 +199,38 @@
     font-size: 18px;
     font-weight: 400;
     line-height: 1.6em;
-    color: rgba(224, 247, 250, 0.9);
-    caret-color: rgba(34, 211, 238, 0.8);
-    padding: 0;
-    margin: 0;
+    color: rgba(224, 247, 250, 0.95);
+    overflow-y: auto;
   }
+
   .chat-textarea::placeholder {
-    color: rgba(224, 247, 250, 0.3);
-  }
-  .chat-textarea:focus {
-    outline: none;
+    color: rgba(224, 247, 250, 0.35);
   }
 
-  /* WA send button — circular, inside the bubble body */
+  /* Send button — round cyan pill hover + active states */
   .chat-send-btn {
-    @apply inline-flex shrink-0 items-center justify-center rounded-full no-underline transition-all duration-200;
-    width: 48px;
-    height: 48px;
+    @apply flex h-12 min-h-12 w-12 min-w-12 shrink-0 cursor-pointer items-center justify-center self-end rounded-full border-none text-white;
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
   }
-  .chat-send-btn.chat-send-active {
-    background: #25d366;
-    color: #061827;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
-    cursor: pointer;
-    animation: chatSendNudge 3s ease-in-out infinite;
+
+  .chat-send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.45);
+    background: linear-gradient(135deg, #0891b2 0%, #22d3ee 100%);
   }
-  .chat-send-btn.chat-send-active:hover {
-    transform: scale(1.08);
-    animation: none;
-  }
-  .chat-send-btn.chat-send-active:active {
+
+  .chat-send-btn:active {
     transform: scale(0.95);
-    animation: none;
-  }
-  .chat-send-btn.chat-send-disabled {
-    background: rgba(34, 211, 238, 0.08);
-    color: rgba(34, 211, 238, 0.25);
-    cursor: default;
-    box-shadow: none;
   }
 
-  /* Periodic nudge on send button — gentle rightward shake to hint interaction */
-  @keyframes chatSendNudge {
-    0%,
-    70%,
-    100% {
-      transform: translateX(0);
-    }
-    78% {
-      transform: translateX(4px);
-    }
-    86% {
-      transform: translateX(-2px);
-    }
-    93% {
-      transform: translateX(2px);
-    }
-  }
-
-  /* Typing indicator — three bouncing dots */
-  .chat-typing {
-    @apply inline-flex items-center gap-1.5;
-  }
-  .chat-dot {
-    @apply inline-block h-1.5 w-1.5 rounded-full;
-    background: rgba(34, 211, 238, 0.5);
-    animation: chatDotBounce 1.4s ease-in-out infinite;
-  }
-  .chat-dot:nth-child(2) {
-    animation-delay: 0.15s;
-  }
-  .chat-dot:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  @keyframes chatDotBounce {
-    0%,
-    60%,
-    100% {
-      transform: translateY(0);
-      opacity: 0.4;
-    }
-    30% {
-      transform: translateY(-6px);
-      opacity: 1;
-    }
-  }
-
-  /* Blinking cursor shown while typing text */
-  .chat-cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1.1em;
-    margin-left: 1px;
-    vertical-align: text-bottom;
-    background: rgba(34, 211, 238, 0.7);
-    animation: chatCursorBlink 0.6s steps(2) infinite;
-  }
-
-  @keyframes chatCursorBlink {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  /* ---- "ou" + phone call link ---- */
-  .cta-or-line {
-    @apply flex w-full items-center justify-center gap-4;
-  }
-  .cta-or-text {
-    font-family: "Inter", "Inter Placeholder", sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    color: rgba(224, 247, 250, 0.4);
-    text-transform: lowercase;
-  }
-  .cta-phone-link {
-    @apply inline-flex items-center gap-2.5 rounded-full no-underline transition-all duration-200;
-    font-family: "Inter", "Inter Placeholder", sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: rgba(224, 247, 250, 0.85);
-    padding: 8px 18px;
-    background: rgba(34, 211, 238, 0.06);
-    border: 1px solid rgba(34, 211, 238, 0.12);
-  }
-  .cta-phone-link:hover {
-    background: rgba(34, 211, 238, 0.12);
-    border-color: rgba(34, 211, 238, 0.25);
-    color: rgba(224, 247, 250, 1);
-  }
-  .cta-phone-link:active {
-    transform: scale(0.97);
-  }
-  .cta-phone-number {
-    font-weight: 500;
-    color: rgba(224, 247, 250, 0.9);
-    letter-spacing: 0.02em;
-  }
-
-  @media (max-width: 1199.98px) {
-    .chat-bubble-wrapper {
-      @apply max-w-full;
-    }
+  @media (max-width: 639.98px) {
     .chat-bubble-header {
-      @apply px-5 pt-4 pb-2.5;
-    }
-    .chat-bubble-avatar {
-      @apply h-10 w-10;
-    }
-    .chat-bubble-sender {
-      font-size: 15px;
-    }
-    .chat-bubble-online {
-      font-size: 12px;
+      @apply px-5 pt-5 pb-3;
     }
     .chat-bubble-body {
       @apply px-5 py-4;
@@ -371,82 +243,43 @@
       font-size: 16px;
     }
     .chat-send-btn {
-      width: 42px;
-      height: 42px;
-    }
-    .cta-or-line {
-      @apply gap-3;
-    }
-    .cta-or-text {
-      font-size: 14px;
-    }
-    .cta-phone-link {
-      font-size: 14px;
-      padding: 6px 14px;
+      @apply h-11 min-h-11 w-11 min-w-11;
     }
   }
-}
 
-/* ---- Water Background with Animated Wave Texture ---- */
-.water-bg {
-  background: linear-gradient(
-    180deg,
-    #7dd3f0 0%,
-    #5bb8e0 20%,
-    #38a3d4 40%,
-    #2194c8 60%,
-    #1a85bc 80%,
-    #1476af 100%
-  );
-}
-
-/* Animated wave texture overlay */
-.water-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.15;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0px,
-    transparent 40px,
-    rgba(255, 255, 255, 0.08) 40px,
-    rgba(255, 255, 255, 0.08) 80px
-  );
-  animation: waveTextureMove 20s linear infinite;
-}
-
-/* Soft wave highlights */
-.water-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 80% 50% at 50% 20%,
-    rgba(255, 255, 255, 0.15) 0%,
-    transparent 60%
-  );
-  animation: waveHighlight 8s ease-in-out infinite;
-}
-
-@keyframes waveTextureMove {
-  0% {
-    transform: translateX(0);
+  /* --- Chat typing animation ---
+     A gentle typing indicator shown before the compose box appears.
+     Fades out when typing finishes. Three dots with staggered bounce. */
+  .chat-typing-badge {
+    @apply flex items-center gap-2.5 self-start px-4 py-2.5;
   }
-  100% {
-    transform: translateX(80px);
-  }
-}
 
-@keyframes waveHighlight {
-  0%,
-  100% {
-    opacity: 0.6;
-    transform: translateY(0) scale(1);
+  .chat-typing-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(34, 211, 238, 0.5);
+    animation: typingBounce 1.4s ease-in-out infinite;
   }
-  50% {
-    opacity: 1;
-    transform: translateY(-20px) scale(1.05);
+
+  .chat-typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .chat-typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typingBounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    30% {
+      transform: translateY(-8px);
+      opacity: 1;
+    }
   }
 }
 
@@ -488,70 +321,28 @@
   }
 }
 
-/* ---- Hero underwater effects stack ----
-   The hero section keeps its clean, uniform aquatic gradient background
-   and `relative` positioning. All visual effects live in .hero-fx (rendered
-   by HeroEffects.jsx), an absolutely-positioned, pointer-events-none layer
-   between the background and the z-10 content. Every layer animates
-   dynamically — no static image overlays, frozen vignettes, or fixed
-   lens smudges:
-      1. .hero-fx-rays — god rays, warped by #waterWarp, swaying and
-         breathing with the sun.
-      2. .hero-fx-voronoi — white Voronoi cell pattern, warped by the
-        #waterWarp SVG filter (feTurbulence + feDisplacementMap) so it
-        undulates like light through water. Two parallax layers via
-        ::before/::after, both drifting and pulsing.
-      3. .hero-bubbles — canvas micro-bubble particle system. */
+/* ---- Hero section with video background ----
+   The hero section retains its relative positioning and overflow hidden.
+   A fullscreen looping video replaces the old underwater effects stack.
+   The video sits in .hero-fx (absolutely-positioned, pointer-events-none
+   layer) with a gradient overlay on top for text readability. */
 .caustics {
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
 
-/* --- 0. Dynamic water background ----
-   Replaces the old static inline gradient. A multi-stop vertical gradient
-   (bright cyan at the top, deep blue at the bottom) gives the water column
-   real depth; a ::before radial "light from above" layer drifts and pulses
-   so the brightness near the top-center shifts slowly, like the sun moving. */
+/* Fallback background gradient used while the video loads and across
+   the full viewport so there's never a flash of empty background.
+   Uses brighter aquatic tones that match the PoolBoy brand. */
 .hero-bg {
   background: linear-gradient(
     180deg,
-    #a8f2f8 0%,
-    #4fd4e8 26%,
-    #14b3d4 52%,
-    #0a8fb4 76%,
-    #066a8c 100%
+    #0e7490 0%,
+    #0891b2 35%,
+    #06b6d4 65%,
+    #22d3ee 100%
   );
-}
-
-/* Light-from-above: bright radial near top-center, drifting + breathing */
-.hero-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 90% 55% at 50% -5%,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.18) 40%,
-    transparent 70%
-  );
-  animation: heroSunDrift 22s ease-in-out infinite alternate;
-}
-
-@keyframes heroSunDrift {
-  0% {
-    transform: translate3d(-4%, 0, 0) scale(1);
-    opacity: 0.75;
-  }
-  50% {
-    transform: translate3d(3%, 2%, 0) scale(1.08);
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(4%, 1%, 0) scale(1.04);
-    opacity: 0.85;
-  }
 }
 
 .hero-fx {
@@ -562,198 +353,100 @@
   overflow: hidden;
 }
 
-/* --- 0a. Illuminated pool-floor branding ----
-   Renders the PoolBoy logo, title, and phone number with a soft radiant
-   aqua-cyan glow (#00F0FF) as if they are illuminated pool-floor signs.
-   Sits underneath the Voronoi caustics and bubble layers (z-index: 0)
-   so water refractions and light lines pass naturally over the glow. */
-.hero-pool-text {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* Soft radiant aqua-cyan glow applied to all pool-text children */
-.hero-pool-glow {
-  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.35))
-    drop-shadow(0 0 20px rgba(0, 240, 255, 0.15))
-    drop-shadow(0 0 50px rgba(0, 240, 255, 0.06));
-}
-
-.hero-pool-title {
-  position: relative;
-  font-family: "Satoshi", "Satoshi Placeholder", "Inter", sans-serif;
-  font-weight: 900;
-  font-size: clamp(48px, 12vw, 120px);
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  color: #ffffff;
-  opacity: 1;
-  text-align: center;
-  text-shadow:
-    0 0 8px rgba(0, 240, 255, 0.4),
-    0 0 24px rgba(0, 240, 255, 0.15);
-}
-
-.hero-pool-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.15em;
-  flex-wrap: nowrap;
-}
-@media (min-width: 640px) {
-  .hero-pool-brand {
-    flex-direction: row;
-    gap: 0.35em;
-  }
-}
-
-.hero-pool-logo {
-  position: relative;
-  display: block;
-  max-height: clamp(100px, 28vw, 160px);
-  width: auto;
-  opacity: 1;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.hero-pool-sub {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3em;
-  font-family: "Inter", "Inter Placeholder", sans-serif;
-  font-weight: 500;
-  font-size: clamp(20px, 4vw, 40px);
-  letter-spacing: 0.06em;
-  line-height: 1.3;
-  color: #ffffff;
-  opacity: 1;
-  text-align: center;
-  margin-top: 0.5em;
-  text-shadow:
-    0 0 8px rgba(0, 240, 255, 0.35),
-    0 0 20px rgba(0, 240, 255, 0.12);
-  text-transform: uppercase;
-}
-
-.hero-pool-phone-icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  color: inherit;
-  opacity: 0.9;
-  flex-shrink: 0;
-}
-
-/* --- 0b. Micro-bubbles canvas ----
-   The canvas renders a micro-bubble particle system that drifts upward
-   with organic sway.  Screen-blended so the canvas only adds light,
-   never darkens.  Warped by #waterWarp for underwater refraction. */
-.hero-bubbles {
+/* --- Fullscreen video background ----
+   The video fills the entire hero viewport, covering it like a background.
+   Object-fit: cover ensures it scales proportionally without distortion,
+   and the video is muted + looped for continuous ambient playback. */
+.hero-video-bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
   pointer-events: none;
-  mix-blend-mode: screen;
-  filter: url(#waterWarp);
 }
 
-/* --- 1. Voronoi cell pattern (warped + depth-blurred) ----
-   The Voronoi tile is an inline SVG data-URI: 14 cells in a 240x240 tile
-   with periodic boundary conditions, so the pattern repeats seamlessly.
-   The whole .hero-fx-voronoi element is warped by the #waterWarp filter. */
-.hero-fx-voronoi {
+/* Gradient overlay on top of the video — very subtle darkening at the
+   bottom edge only so text remains readable without dimming the video. */
+.hero-video-overlay {
   position: absolute;
   inset: 0;
-  filter: url(#waterWarp);
-}
-
-.hero-fx-voronoi::before,
-.hero-fx-voronoi::after {
-  content: "";
-  position: absolute;
-  inset: -20%;
   pointer-events: none;
-  mix-blend-mode: screen;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22240%22%20height%3D%22240%22%20viewBox%3D%220%200%20240%20240%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22vg%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220.95%22%2F%3E%3Cstop%20offset%3D%2240%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220.55%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3Cfilter%20id%3D%22glow%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%222.5%22%20result%3D%22blur%22%2F%3E%3CfeMerge%3E%3CfeMergeNode%20in%3D%22blur%22%2F%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22%2F%3E%3C%2FfeMerge%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221%22%20filter%3D%22url%28%23glow%29%22%3E%3Cpath%20d%3D%22M193.03%20158.39L177.59%20114.91L187.05%2085.53L222.25%2071.27L223.01%2071.48L232.98%20161.56Z%22%2F%3E%3Cpath%20d%3D%22M175.2%2073.87L187.05%2085.53L177.59%20114.91L125.58%20122.02L122.99%20121.37L107.38%2078.25L131.4%2057.68Z%22%2F%3E%3Cpath%20d%3D%22M125.58%20122.02L177.59%20114.91L193.03%20158.39L157.44%20211.54L141.76%20213.1Z%22%2F%3E%3Cpath%20d%3D%22M18.33%20226.62L35.97%20182.91L97.19%20198.74L125.38%20218.06L116.37%20238.87L55.76%20279.22Z%22%2F%3E%3Cpath%20d%3D%22M107.38%2078.25L122.99%20121.37L104.3%20130.82L88.79%20127.75L73.54%2075.1Z%22%2F%3E%3Cpath%20d%3D%22M34.21%20145.99L27.97%2082.4L50.66%2065.13L73.54%2075.1L88.79%20127.75Z%22%2F%3E%3Cpath%20d%3D%22M170.98%20-16.55L220.8%203.41L222.25%2071.27L187.05%2085.53L175.2%2073.87Z%22%2F%3E%3Cpath%20d%3D%22M35.97%20182.91L27.75%20165.9L34.21%20145.99L88.79%20127.75L104.3%20130.82L97.19%20198.74Z%22%2F%3E%3Cpath%20d%3D%22M55.76%2039.22L116.37%20-1.13L131.4%2057.68L107.38%2078.25L73.54%2075.1L50.66%2065.13Z%22%2F%3E%3Cpath%20d%3D%22M27.97%2082.4L-16.99%2071.48L-17.75%2071.27L-19.2%203.41L18.33%20-13.38L55.76%2039.22L50.66%2065.13Z%22%2F%3E%3Cpath%20d%3D%22M104.3%20130.82L122.99%20121.37L125.58%20122.02L141.76%20213.1L125.38%20218.06L97.19%20198.74Z%22%2F%3E%3Cpath%20d%3D%22M116.37%20-1.13L125.38%20-21.94L141.76%20-26.9L157.44%20-28.46L170.98%20-16.55L175.2%2073.87L131.4%2057.68Z%22%2F%3E%3Cpath%20d%3D%22M267.75%20165.9L232.98%20161.56L223.01%2071.48L267.97%2082.4L274.21%20145.99Z%22%2F%3E%3Cpath%20d%3D%22M220.8%20243.41L170.98%20223.45L157.44%20211.54L193.03%20158.39L232.98%20161.56L267.75%20165.9L275.97%20182.91L258.33%20226.62Z%22%2F%3E%3C%2Fg%3E%3Cg%3E%3Ccircle%20cx%3D%22193.03%22%20cy%3D%22158.39%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22177.59%22%20cy%3D%22114.91%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22187.05%22%20cy%3D%2285.53%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22222.25%22%20cy%3D%2271.27%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22223.01%22%20cy%3D%2271.48%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22232.98%22%20cy%3D%22161.56%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22175.2%22%20cy%3D%2273.87%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22125.58%22%20cy%3D%22122.02%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22122.99%22%20cy%3D%22121.37%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22107.38%22%20cy%3D%2278.25%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22131.4%22%20cy%3D%2257.68%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22157.44%22%20cy%3D%22211.54%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22141.76%22%20cy%3D%22213.1%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2218.33%22%20cy%3D%22226.62%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2235.97%22%20cy%3D%22182.91%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2297.19%22%20cy%3D%22198.74%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22125.38%22%20cy%3D%22218.06%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22116.37%22%20cy%3D%22238.87%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2255.76%22%20cy%3D%22279.22%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22104.3%22%20cy%3D%22130.82%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2288.79%22%20cy%3D%22127.75%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2273.54%22%20cy%3D%2275.1%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2234.21%22%20cy%3D%22145.99%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2227.97%22%20cy%3D%2282.4%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2250.66%22%20cy%3D%2265.13%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22170.98%22%20cy%3D%22-16.55%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22220.8%22%20cy%3D%223.41%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2227.75%22%20cy%3D%22165.9%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2255.76%22%20cy%3D%2239.22%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22116.37%22%20cy%3D%22-1.13%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22-16.99%22%20cy%3D%2271.48%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22-17.75%22%20cy%3D%2271.27%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22-19.2%22%20cy%3D%223.41%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%2218.33%22%20cy%3D%22-13.38%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22125.38%22%20cy%3D%22-21.94%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22141.76%22%20cy%3D%22-26.9%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22157.44%22%20cy%3D%22-28.46%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22267.75%22%20cy%3D%22165.9%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22267.97%22%20cy%3D%2282.4%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22274.21%22%20cy%3D%22145.99%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22220.8%22%20cy%3D%22243.41%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22170.98%22%20cy%3D%22223.45%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22275.97%22%20cy%3D%22182.91%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3Ccircle%20cx%3D%22258.33%22%20cy%3D%22226.62%22%20r%3D%225%22%20fill%3D%22url(%23vg)%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
-  background-size: 240px 240px;
-  background-repeat: repeat;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.25) 85%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
 }
 
-/* Back Voronoi layer — deeper: drifting diagonally, gentle shimmer.
-   The drop-shadow turns the white strokes into glowing light lines.
-   Increased radius + opacity so the glow covers all lines uniformly,
-   not just the vertices. */
-.hero-fx-voronoi::before {
-  opacity: 0.6;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.95));
-  animation: causticsDriftA 16s ease-in-out infinite alternate;
+/* --- Scroll-down chevron ----
+   A subtle, animated ↓ chevron anchored at the bottom centre of the
+   hero viewport.  Fades in after 2 s, then bounces gently to invite
+   the visitor to scroll.  Positioned inside .hero-fx so it stays on
+   top of the effects stack. */
+.hero-scroll-chevron {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: auto;
+  color: rgba(255, 255, 255, 0.65);
+  opacity: 0;
+  animation:
+    scrollChevronFadeIn 1s ease-out 2s forwards,
+    scrollChevronBounce 2s ease-in-out 3s infinite;
+  transition: color 0.3s ease;
 }
 
-/* Near Voronoi layer — sharper: scaled up + offset, counter-drifting parallax.
-   The interference between the two patterns creates the shimmering moiré.
-   Increased radius + opacity so the glow covers all lines uniformly. */
-.hero-fx-voronoi::after {
-  opacity: 0.45;
-  background-size: 320px 320px;
-  background-position: 60px 48px;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.85));
-  animation: causticsDriftB 11s ease-in-out infinite alternate;
+.hero-scroll-chevron:hover {
+  color: rgba(255, 255, 255, 0.95);
 }
 
-/* Slow diagonal drift + subtle scale "breathing" + opacity pulse —
-   feels like light rippling across pool tiles */
-@keyframes causticsDriftA {
+@keyframes scrollChevronFadeIn {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.42;
-  }
-  50% {
-    transform: translate3d(2.5%, 2%, 0) scale(1.03);
-    opacity: 0.68;
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
   }
   100% {
-    transform: translate3d(-2%, 2%, 0) scale(1.05);
-    opacity: 0.5;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
-@keyframes causticsDriftB {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1.02);
-    opacity: 0.26;
+@keyframes scrollChevronBounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  30% {
+    transform: translateX(-50%) translateY(-6px);
   }
   50% {
-    transform: translate3d(-2%, -1.5%, 0) scale(1);
-    opacity: 0.46;
+    transform: translateX(-50%) translateY(0);
   }
-  100% {
-    transform: translate3d(2%, -2%, 0) scale(0.98);
-    opacity: 0.32;
+  70% {
+    transform: translateX(-50%) translateY(-3px);
   }
 }
 
-/* Respect reduced-motion preferences — painted text is static so needs
-   no animation override, only the moving layers are paused. */
+@media (max-width: 639.98px) {
+  .hero-scroll-chevron {
+    bottom: 24px;
+  }
+}
+
+/* Respect reduced-motion preferences — when the user prefers reduced
+   motion, hide the video (fallback gradient shows) and show the chevron
+   immediately without animation. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-fx-voronoi::before,
-  .hero-fx-voronoi::after,
-  .hero-bg::before {
-    animation: none;
+  .hero-video-bg {
+    display: none;
   }
-  .hero-fx-voronoi,
-  .hero-bubbles {
-    filter: none;
+  .hero-scroll-chevron {
+    opacity: 1;
+    animation: none;
   }
 }
