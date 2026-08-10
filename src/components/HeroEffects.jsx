@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import heroVideo from "../assets/videos-desktop/video1.mp4";
+import heroVideoDesktop from "../assets/videos-desktop/video1.mp4";
+import heroVideoMobile from "../assets/videos-mobile/video1.mp4";
 
 /**
  * HeroEffects — fullscreen video background for the hero section.
@@ -7,6 +8,10 @@ import heroVideo from "../assets/videos-desktop/video1.mp4";
  * Renders a looping, muted video that fills the entire hero viewport
  * as an absolutely-positioned background layer. A subtle gradient overlay
  * sits on top to ensure text readability.
+ *
+ * Uses the mobile video on viewports < 640px and the desktop video on 640px+
+ * via the `<source media="...">` attribute — the browser picks the first
+ * matching source automatically.
  *
  * Accessibility:
  *   - `prefers-reduced-motion` disables video autoplay (static poster fallback)
@@ -17,7 +22,7 @@ export default function HeroEffects() {
 
   return (
     <div className="hero-fx" aria-hidden="true">
-      {/* Fullscreen video background */}
+      {/* Fullscreen video background — responsive source switching */}
       <video
         ref={videoRef}
         className="hero-video-bg"
@@ -25,10 +30,15 @@ export default function HeroEffects() {
         muted
         loop
         playsInline
-        poster={heroVideo}
+        poster={heroVideoDesktop}
         preload="auto"
       >
-        <source src={heroVideo} type="video/mp4" />
+        <source
+          src={heroVideoMobile}
+          type="video/mp4"
+          media="(max-width: 639px)"
+        />
+        <source src={heroVideoDesktop} type="video/mp4" />
       </video>
 
       {/* Gradient overlay for text readability */}
