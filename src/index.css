@@ -551,6 +551,17 @@
   pointer-events: none;
 }
 
+/* Crossfade overlay that masks the loop cut — darkened to black so the
+   JS-driven opacity transition hides the visual discontinuity when the
+   video loops. Should sit between the video and the gradient overlay. */
+.hero-video-loop-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #000;
+  opacity: 0; /* JS toggles this at the loop boundary */
+}
+
 /* Gradient overlay on top of the video — very subtle darkening at the
    bottom edge only so text remains readable without dimming the video. */
 .hero-video-overlay {
@@ -625,9 +636,13 @@
 
 /* Respect reduced-motion preferences — when the user prefers reduced
    motion, hide the video (fallback gradient shows) and show the chevron
-   immediately without animation. */
+   immediately without animation. The loop-fade overlay is also hidden
+   since it relies on JS-driven opacity transitions. */
 @media (prefers-reduced-motion: reduce) {
   .hero-video-bg {
+    display: none;
+  }
+  .hero-video-loop-fade {
     display: none;
   }
   .hero-scroll-chevron {
