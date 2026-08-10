@@ -1,5 +1,6 @@
 import { useContent } from "../i18n/useContent.jsx";
 import { ServiceIcon } from "./icons.jsx";
+import Header from "./Header.jsx";
 
 // Services section:
 //   background-color #f7fbfc, max-width 1180px, padding 46px 24px, gap 28px
@@ -24,9 +25,12 @@ export default function Features() {
   return (
     <section
       id="services"
-      className="services-section mx-auto"
+      className="services-section relative mx-auto"
       data-section="services"
     >
+      {/* Language switcher — pinned to the top-right of the Services section */}
+      <Header />
+
       {/* Intro */}
       <div className="flex w-full max-w-[720px] flex-col items-center gap-2 md:gap-2.5 px-2 md:px-0">
         <p

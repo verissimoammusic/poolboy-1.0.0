@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import heroVideoDesktop from "../assets/videos-desktop/video1.mp4";
 import heroVideoMobile from "../assets/videos-mobile/video1.mp4";
 
@@ -9,9 +9,11 @@ import heroVideoMobile from "../assets/videos-mobile/video1.mp4";
  * as an absolutely-positioned background layer. A subtle gradient overlay
  * sits on top to ensure text readability.
  *
- * Uses the mobile video on viewports < 640px and the desktop video on 640px+
- * via the `<source media="...">` attribute — the browser picks the first
- * matching source automatically.
+ * Uses the mobile video on viewports < 640px and the desktop video on 640px+.
+ * The `<source media="...">` attribute is **not supported** on `<video>`
+ * elements (it was removed from the HTML spec and only works inside
+ * `<picture>`), so we select the correct source via `window.matchMedia`
+ * and set it directly on the video element.
  *
  * Accessibility:
  *   - `prefers-reduced-motion` disables video autoplay (static poster fallback)
@@ -19,6 +21,28 @@ import heroVideoMobile from "../assets/videos-mobile/video1.mp4";
  */
 export default function HeroEffects() {
   const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const mobileQuery = window.matchMedia("(max-width: 639px)");
+
+    const setSource = () => {
+      const src = mobileQuery.matches ? heroVideoMobile : heroVideoDesktop;
+      // Only update if the source actually changed to avoid reloading
+      if (video.src !== src) {
+        video.src = src;
+        video.load();
+        // Attempt to play after loading (autoplay may be blocked)
+        video.play().catch(() => {});
+      }
+    };
+
+    setSource();
+    mobileQuery.addEventListener("change", setSource);
+    return () => mobileQuery.removeEventListener("change", setSource);
+  }, []);
 
   return (
     <div className="hero-fx" aria-hidden="true">
@@ -32,14 +56,7 @@ export default function HeroEffects() {
         playsInline
         poster={heroVideoDesktop}
         preload="auto"
-      >
-        <source
-          src={heroVideoMobile}
-          type="video/mp4"
-          media="(max-width: 639px)"
-        />
-        <source src={heroVideoDesktop} type="video/mp4" />
-      </video>
+      />
 
       {/* Gradient overlay for text readability */}
       <div className="hero-video-overlay" />

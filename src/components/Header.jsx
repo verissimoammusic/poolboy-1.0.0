@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 import { useContent } from "../i18n/useContent.jsx";
 
 // Floating "Language Dropdown" — a pill pinned to the top-right corner of the
-// Hero section. Shows the current language as a flag in a circle next to its
-// 2-letter uppercase code; opening it reveals the PT / EN / FR options in the
-// same format.
+// Services (Features) section. Shows the current language as a flag in a
+// circle next to its 2-letter uppercase code; opening it reveals the
+// PT / EN / FR options in the same format.
 //
-//   container: absolute, top 24 right 24, z-30 (pinned to Hero, out of flow)
-//   trigger:   pill — border cyan/20, bg ink-900/50, radius 999px, fixed width
-//              so opening/closing the menu can never shift any layout
+//   container: absolute, top 24 right 24, z-30 (pinned to Services, out of flow)
+//   trigger:   pill — border ocean-900/10, bg white/80, radius 999px, fixed
+//              width so opening/closing the menu can never shift any layout
 //   menu:      pill-styled dropdown — same border/bg, rounded-2xl, mt-2
-//   active row: bg-brand (#1889C9), shadow-lang-active, white text
-//   inactive:   transparent bg, white/90 text, hover white
+//   active row: bg-brand, shadow-soft-glow, white text
+//   inactive:   transparent bg, ocean-900/80 text, hover ocean-900/5
 //
 // Flags are inline SVG clipped by a <circle>, so they render identically on
 // every platform (emoji flags fall back to plain letter glyphs on Windows).
@@ -194,7 +194,7 @@ export default function Header() {
         aria-expanded={open}
         aria-controls="lang-menu"
         aria-label={`Language: ${current.label}. Change language`}
-        className="flex w-[64px] cursor-pointer items-center justify-between gap-1.5 rounded-full border border-cyan/20 bg-ink-900/50 px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-white transition-colors hover:bg-ink-900/70 md:w-[76px] md:gap-2 md:px-2.5 md:py-[7px] md:text-[13px]"
+        className="flex w-[64px] cursor-pointer items-center justify-between gap-1.5 rounded-full border border-ocean-900/10 bg-white/80 px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-ocean-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white md:w-[76px] md:gap-2 md:px-2.5 md:py-[7px] md:text-[13px]"
         style={{ top: 16, right: 16 }}
       >
         <span className="flex items-center gap-1 md:gap-1.5">
@@ -230,7 +230,7 @@ export default function Header() {
           id="lang-menu"
           role="menu"
           aria-label="Change language"
-          className="absolute right-0 top-full mt-1.5 flex w-[92px] flex-col gap-1 rounded-xl border border-cyan/20 bg-ink-900/85 p-1 shadow-lang-active backdrop-blur-sm md:mt-2 md:w-[104px] md:rounded-2xl md:gap-[3px] md:p-1.5"
+          className="absolute right-0 top-full mt-1.5 flex w-[92px] flex-col gap-1 rounded-xl border border-ocean-900/10 bg-white/95 p-1 shadow-card-shadow backdrop-blur-sm md:mt-2 md:w-[104px] md:rounded-2xl md:gap-[3px] md:p-1.5"
         >
           {LANGUAGES.map((l, i) => {
             const active = l.code === lang;
@@ -246,10 +246,10 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                   title={l.label}
                   className={
-                    "flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide text-white transition-colors md:gap-2 md:rounded-xl md:px-2.5 md:py-2 md:text-[13px] " +
+                    "flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-bold uppercase leading-none tracking-wide transition-colors md:gap-2 md:rounded-xl md:px-2.5 md:py-2 md:text-[13px] " +
                     (active
-                      ? "bg-brand text-white shadow-lang-active"
-                      : "bg-transparent text-white/90 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none")
+                      ? "bg-brand text-white shadow-soft-glow"
+                      : "bg-transparent text-ocean-900/80 hover:bg-ocean-900/5 hover:text-ocean-900 focus:bg-ocean-900/5 focus:text-ocean-900 focus:outline-none")
                   }
                 >
                   <span

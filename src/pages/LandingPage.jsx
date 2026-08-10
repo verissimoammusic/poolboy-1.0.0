@@ -1,5 +1,4 @@
 import Seo from "../components/Seo.jsx";
-import Header from "../components/Header.jsx";
 import Hero from "../components/Hero.jsx";
 import Features from "../components/Features.jsx";
 import CtaSection from "../components/CtaSection.jsx";
@@ -8,7 +7,7 @@ import { useContent } from "../i18n/useContent.jsx";
 
 // Shared page layout for both language routes (`/` PT and `/en` EN).
 // The "Language Slider" (Header) is positioned absolutely and lives inside
-// the Hero section, as a child of the Hero `<section>`.
+// the Services (Features) section, pinned to its top-right corner.
 //
 // `key={lang}` on the wrapper forces a clean remount of the whole page subtree
 // whenever the language route changes, guaranteeing every localized string,
@@ -19,9 +18,7 @@ export default function LandingPage() {
     <div key={lang}>
       <Seo />
       <main>
-        <Hero>
-          <Header />
-        </Hero>
+        <Hero />
         <Features />
         <CtaSection />
       </main>

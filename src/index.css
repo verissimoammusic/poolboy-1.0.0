@@ -153,7 +153,10 @@
     line-height: 1.2em;
   }
 
-  /* Message body — flex row: text area + send button */
+  /* Message body — flex row: text area + send button
+     Default height is 140px (when section is fully visible). JS overrides
+     this inline based on scroll position, shrinking it as the section goes
+     out of view. */
   .chat-bubble-body {
     @apply flex items-end gap-4 px-7 py-5;
     height: 140px;

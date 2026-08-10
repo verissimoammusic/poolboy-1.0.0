@@ -41,19 +41,43 @@ export default function CtaSection() {
     setMessage("");
   }, []);
 
-  // ── IntersectionObserver: start/stop animation on scroll ──
+  // ── Scroll-driven chatbox height ──
+  // Tracks the section's visible ratio using getBoundingClientRect on every
+  // scroll frame and directly sets the height in pixels on .chat-bubble-body.
+  // The box starts at 0px when off-screen and reaches 140px when fully visible.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const chatBody = el.querySelector(".chat-bubble-body");
+    if (!chatBody) return;
+
+    function updateScale() {
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      // How much of the section is visible (clamped 0–1)
+      const visible = Math.min(rect.bottom, viewportH) - Math.max(rect.top, 0);
+      const ratio = Math.min(1, Math.max(0, visible / rect.height));
+      // Smoothstep easing for a natural feel
+      const eased = ratio * ratio * (3 - 2 * ratio);
+      // Scale from 0px → 140px based on how visible the section is
+      chatBody.style.height = Math.round(eased * 140) + "px";
+      rafId = requestAnimationFrame(updateScale);
+    }
+
+    let rafId = requestAnimationFrame(updateScale);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  // ── IntersectionObserver: start animation when section enters viewport ──
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Restart animation (reset ensures clean state even if was "pulsing")
           resetAnimation();
-          // Small delay so state settles before starting
           requestAnimationFrame(() => setPhase("typing"));
         } else {
-          // Scrolled out — reset everything
           resetAnimation();
         }
       },
