@@ -138,7 +138,7 @@ export default function Hero({ children }) {
           </a>
 
           {/* Mobile note pill */}
-          <p className="note-pill">{hero.ctaNote}</p>
+          <p className="note-pill mt-3 md:mt-4">{hero.ctaNote}</p>
         </div>
       </div>
 
