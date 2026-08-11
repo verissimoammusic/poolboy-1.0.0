@@ -91,18 +91,16 @@ export default function Hero({ children }) {
       {children}
 
       {/* Dark glass card over the section background effects */}
-      <div className="hero-card relative flex flex-col items-center gap-6 overflow-hidden">
+      <div className="hero-card relative flex flex-col items-center gap-4 md:gap-3">
         {/* Content — placed above the glass with isolation to protect box-shadows */}
-        <div className="relative z-10 isolate flex flex-col items-center gap-6">
-          {/* Brand Row — logo + wordmark
-            Desktop: side-by-side (row, gap 10px)
-            Mobile: stacked (column), logo bigger above the title */}
-          <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:gap-2.5">
+        <div className="relative z-10 isolate flex flex-col items-center gap-3 md:gap-0.5">
+          {/* Brand Row — logo + wordmark + subtitle */}
+          <div className="flex flex-col items-center gap-0.5 md:flex-row md:gap-2.5">
             <div className="animate-floatY">
               <img
                 src={logo}
                 alt={`${brand} logo`}
-                className="h-[160px] w-[160px] object-contain md:h-[192px] md:w-[192px]"
+                className="h-[140px] w-[140px] object-contain md:h-[192px] md:w-[192px]"
                 fetchPriority="high"
               />
             </div>
@@ -111,20 +109,29 @@ export default function Hero({ children }) {
               style={{
                 fontFamily:
                   '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
-                fontSize: "clamp(40px, 12vw, 111px)",
+                fontSize: "clamp(56px, 12vw, 111px)",
                 letterSpacing: "-0.03em",
               }}
             >
               {brand}
             </p>
           </div>
-
+          {/* Subtitle */}
+          <p
+            className="text-center text-sm font-medium text-white/60 md:text-xl"
+            style={{
+              fontFamily: '"Inter", "Inter Placeholder", sans-serif',
+              letterSpacing: "0.02em",
+            }}
+          >
+            Limpeza ·{"\u00A0"}Manutenção ·{"\u00A0"}Reparação
+          </p>
           {/* WhatsApp CTA */}
           <a
             href={`${CONTACT.whatsappBase}?text=${encodeURIComponent(CONTACT.whatsappPlaceholder.pt)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa"
+            className="btn-wa mt-3 md:mt-4"
           >
             <IconWhatsApp className="h-6 w-6 shrink-0" />
             <span>{hero.cta}</span>

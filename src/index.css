@@ -90,7 +90,7 @@
   }
   @media (max-width: 1199.98px) {
     .hero-card {
-      @apply max-w-card rounded-hero-sm px-3 pt-[42px] pb-[22px];
+      @apply max-w-card rounded-hero-sm px-3 pt-4 pb-4;
       gap: 16px;
     }
   }
@@ -134,7 +134,7 @@
   }
   @media (max-width: 1199.98px) {
     .btn-wa {
-      @apply max-w-[322px] gap-2.5 px-[18px] py-3;
+      @apply max-w-[322px] gap-2 px-3 py-2 text-[15px];
     }
   }
 
