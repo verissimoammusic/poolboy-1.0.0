@@ -1,7 +1,9 @@
 import { CONTACT } from "../i18n/content.js";
 import { useContent } from "../i18n/useContent.jsx";
 import { IconWhatsApp } from "./icons.jsx";
+import HeroEffects from "./HeroEffects.jsx";
 import logo from "../assets/logo.png";
+import { useEffect, useRef } from "react";
 
 // Hero section:
 //   radial-gradient(50% 50%, #08243a 0%, #061827 100%)
@@ -19,74 +21,137 @@ import logo from "../assets/logo.png";
 export default function Hero({ children }) {
   const { data } = useContent();
   const { hero, brand } = data;
+  const sectionRef = useRef(null);
+  const snapTimeoutRef = useRef(null);
+  const isSnappingRef = useRef(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleScroll = () => {
+      // Clear any pending snap check on every scroll
+      if (snapTimeoutRef.current) {
+        clearTimeout(snapTimeoutRef.current);
+        snapTimeoutRef.current = null;
+      }
+
+      // If currently snapping, ignore
+      if (isSnappingRef.current) return;
+
+      // Schedule a check after scrolling stops
+      snapTimeoutRef.current = setTimeout(() => {
+        const rect = section.getBoundingClientRect();
+        const heroHeight = rect.height;
+        const viewportMiddle = window.innerHeight * 0.5;
+        const heroCenter = rect.top + heroHeight / 2;
+        const isMoreThanHalfVisible =
+          heroCenter < viewportMiddle && rect.bottom > heroHeight * 0.5;
+
+        if (isMoreThanHalfVisible) {
+          isSnappingRef.current = true;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          setTimeout(() => {
+            isSnappingRef.current = false;
+          }, 500);
+        }
+      }, 300); // Wait 300ms after scrolling stops
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (snapTimeoutRef.current) {
+        clearTimeout(snapTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section
-      className="relative flex min-h-[560px] w-full flex-col items-center justify-center gap-8 px-6 py-16 md:py-24"
+      ref={sectionRef}
+      className="relative flex h-screen w-full flex-col items-center justify-center gap-8 px-6 py-16 md:py-24"
       style={{
         background: "radial-gradient(50% 50%, #08243a 0%, #061827 100%)",
       }}
       data-section="hero"
     >
+      {/* Turquoise pool background for the entire section - bright gradient bottom to top */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top, #155e75 0%, #0e7490 25%, #0891b2 50%, #06b5d4 75%, #22d3ee 100%)",
+        }}
+        aria-hidden="true"
+      />
+      {/* Hero effects — caustics, water warp, bubbles (section background) */}
+      <HeroEffects />
       {/* Language switcher — absolutely positioned inside the Hero */}
       {children}
 
-      <div className="hero-card flex flex-col items-center gap-6">
-        {/* Brand Row — logo + wordmark
+      {/* Dark glass card over the section background effects */}
+      <div className="hero-card relative flex flex-col items-center gap-6 overflow-hidden">
+        {/* Content — placed above the glass with isolation to protect box-shadows */}
+        <div className="relative z-10 isolate flex flex-col items-center gap-6">
+          {/* Brand Row — logo + wordmark
             Desktop: side-by-side (row, gap 10px)
             Mobile: stacked (column), logo bigger above the title */}
-        <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:gap-2.5">
-          <div className="animate-floatY">
-            <img
-              src={logo}
-              alt={`${brand} logo`}
-              className="h-[120px] w-[120px] object-contain md:h-[192px] md:w-[192px]"
-              fetchPriority="high"
-            />
+          <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:gap-2.5">
+            <div className="animate-floatY">
+              <img
+                src={logo}
+                alt={`${brand} logo`}
+                className="h-[120px] w-[120px] object-contain md:h-[192px] md:w-[192px]"
+                fetchPriority="high"
+              />
+            </div>
+            <p
+              className="text-center font-bold leading-[1em] text-white md:text-left"
+              style={{
+                fontFamily:
+                  '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
+                fontSize: "clamp(40px, 12vw, 111px)",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              {brand}
+            </p>
           </div>
-          <p
-            className="text-center font-bold leading-[1em] text-white md:text-left"
-            style={{
-              fontFamily:
-                '"Satoshi", "Satoshi Placeholder", "Inter", sans-serif',
-              fontSize: "clamp(40px, 12vw, 111px)",
-              letterSpacing: "-0.03em",
-            }}
+
+          {/* WhatsApp CTA */}
+          <a
+            href={`${CONTACT.whatsappBase}?text=${encodeURIComponent(CONTACT.whatsappPlaceholder.pt)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-wa"
           >
-            {brand}
-          </p>
+            <IconWhatsApp className="h-6 w-6 shrink-0" />
+            <span>{hero.cta}</span>
+          </a>
+
+          {/* Mobile note pill */}
+          <p className="note-pill">{hero.ctaNote}</p>
         </div>
-
-        {/* Headline */}
-        <h1
-          className="w-full text-center font-normal leading-[1.55em]"
-          style={{
-            fontFamily: '"Inter", "Inter Placeholder", sans-serif',
-            fontSize: "clamp(18px, 2.1vw, 25px)",
-            color: "rgba(226, 246, 255, 0.74)",
-            textWrap: "balance",
-          }}
-        >
-          {hero.headline}
-        </h1>
-
-        {/* WhatsApp CTA */}
-        <a
-          href={`${CONTACT.whatsappBase}?text=${encodeURIComponent(CONTACT.whatsappPlaceholder.pt)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-wa"
-        >
-          <IconWhatsApp className="h-6 w-6 shrink-0" />
-          <span>{hero.cta}</span>
-        </a>
-
-        {/* Mobile note pill */}
-        <p className="note-pill">{hero.ctaNote}</p>
       </div>
 
       {/* Water line divider */}
       <div className="water-line" />
+
+      {/* Scroll indicator — subtle chevron at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center gap-2 pb-6">
+        <div className="relative z-10 animate-bounce" aria-hidden="true">
+          <svg className="h-6 w-6" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M8 13 L2 6 L4.5 4 L8 7.5 L11.5 4 L14 6 Z"
+              stroke="rgba(255, 255, 255, 0.25)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
     </section>
   );
 }

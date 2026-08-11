@@ -202,11 +202,12 @@ export default function CtaSection() {
 
       <div className="cta-content">
         <p
-          className="px-2 text-center text-xs font-bold uppercase text-water-500 md:text-sm"
+          className="px-2 text-center font-bold uppercase text-water-500"
           style={{
             fontFamily: '"Inter", "Inter Placeholder", sans-serif',
             lineHeight: "1em",
             letterSpacing: "0.08em",
+            fontSize: "10px",
           }}
         >
           {contact.kicker}
