@@ -207,6 +207,8 @@ export const content = {
     hero: {
       // Main heading — the primary service description (subtitle from original)
       headline: "Limpeza e Manutenção de Piscinas",
+      // Subtitle — the three core service pillars
+      subtitle: "Limpeza · Manutenção · Reparação",
       // Location line — secondary text with geographic focus
       location: "Lagoa de Albufeira, Sesimbra e região",
       cta: "Fale Connosco !",
@@ -280,6 +282,8 @@ export const content = {
     hero: {
       // Main heading — the primary service description (subtitle from original)
       headline: "Pool Care and Maintenance",
+      // Subtitle — the three core service pillars
+      subtitle: "Cleaning · Maintenance · Repair",
       // Location line — secondary text with geographic focus
       location: "Sesimbra, Lagoa de Albufeira and region",
       cta: "Get in Touch!",
@@ -357,6 +361,8 @@ export const content = {
     hero: {
       // Main heading — the primary service description (subtitle from original)
       headline: "Entretien et Maintenance de Piscine",
+      // Subtitle — the three core service pillars
+      subtitle: "Nettoyage · Maintenance · Réparation",
       // Location line — secondary text with geographic focus
       location: "Sesimbra, Lagoa de Albufeira et région",
       cta: "Contactez-nous !",

@@ -21,6 +21,7 @@ import { useEffect, useRef } from "react";
 export default function Hero({ children }) {
   const { data } = useContent();
   const { hero, brand } = data;
+  const { subtitle } = hero;
   const sectionRef = useRef(null);
   const snapTimeoutRef = useRef(null);
   const isSnappingRef = useRef(false);
@@ -124,7 +125,7 @@ export default function Hero({ children }) {
               letterSpacing: "0.02em",
             }}
           >
-            Limpeza ·{"\u00A0"}Manutenção ·{"\u00A0"}Reparação
+            {subtitle}
           </p>
           {/* WhatsApp CTA */}
           <a
@@ -145,14 +146,14 @@ export default function Hero({ children }) {
       {/* Water line divider */}
       <div className="water-line" />
 
-      {/* Scroll indicator — subtle chevron at bottom */}
+      {/* Scroll indicator — chevron at bottom */}
       <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center gap-2 pb-6">
         <div className="relative z-10 animate-bounce" aria-hidden="true">
           <svg className="h-6 w-6" viewBox="0 0 16 16" fill="none">
             <path
               d="M8 13 L2 6 L4.5 4 L8 7.5 L11.5 4 L14 6 Z"
-              stroke="rgba(255, 255, 255, 0.25)"
-              strokeWidth="1"
+              stroke="rgba(255, 255, 255, 0.6)"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
