@@ -102,7 +102,7 @@ export default function Hero({ children }) {
               <img
                 src={logo}
                 alt={`${brand} logo`}
-                className="h-[120px] w-[120px] object-contain md:h-[192px] md:w-[192px]"
+                className="h-[160px] w-[160px] object-contain md:h-[192px] md:w-[192px]"
                 fetchPriority="high"
               />
             </div>

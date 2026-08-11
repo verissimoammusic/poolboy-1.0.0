@@ -202,12 +202,12 @@ export default function CtaSection() {
 
       <div className="cta-content">
         <p
-          className="px-2 text-center font-bold uppercase text-water-500"
+          className="mb-2 px-2 text-center font-bold uppercase text-water-500"
           style={{
             fontFamily: '"Inter", "Inter Placeholder", sans-serif',
             lineHeight: "1em",
             letterSpacing: "0.08em",
-            fontSize: "10px",
+            fontSize: "13px",
           }}
         >
           {contact.kicker}
@@ -339,7 +339,7 @@ export default function CtaSection() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-3 pt-1">
+        <div className="flex flex-col items-center gap-4 pt-2">
           <div className="flex w-full items-center gap-3 text-white/40 text-xs font-medium uppercase tracking-[0.15em]">
             <span className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-white/10" />
             <span>{orLabel}</span>
