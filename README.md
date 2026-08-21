@@ -144,9 +144,9 @@ It exports two things:
 
 ```js
 export const CONTACT = {
-  phoneDisplay: "960 363 769",
-  phoneHref: "tel:+351960363769",
-  whatsappHref: "https://wa.me/351960363769",
+  phoneDisplay: "931 492 206",
+  phoneHref: "tel:+351931492206",
+  whatsappHref: "https://wa.me/351931492206",
   canonical: "https://poolboy.example.com/", // <-- TODO: set real domain before deploy
 };
 ```

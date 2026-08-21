@@ -5,16 +5,16 @@
 // translation written for this rebuild.
 //
 // Contact details:
-//   Phone     : +351 960 363 769  (display: 960 363 769)
-//   WhatsApp  : https://wa.me/351960363769
+//   Phone     : +351 931 492 206  (display: 931 492 206)
+//   WhatsApp  : https://wa.me/351931492206
 //   Canonical : https://poolboy.pt/  (drives SEO canonical + hreflang in
 //             src/components/Seo.jsx)
 // =============================================================================
 
 export const CONTACT = {
-  phoneDisplay: "960 363 769",
-  phoneHref: "tel:+351960363769",
-  whatsappBase: "https://wa.me/351960363769",
+  phoneDisplay: "931 492 206",
+  phoneHref: "tel:+351931492206",
+  whatsappBase: "https://wa.me/351931492206",
   // Default WhatsApp greeting, loaded as a pre-filled message when a visitor
   // taps either WhatsApp button. The button itself stays text-free — this text
   // only appears inside the WhatsApp chat once opened. Kept simple and

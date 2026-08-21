@@ -11,7 +11,7 @@ import { IconWhatsApp, IconPhone } from "./icons.jsx";
 //   │──────────────────────────────────────────│
 //   │  [message / typing]              ➤       │
 //   └──────────────────────────────────────────┘
-//        ou  📞 Ligar +351 960 363 769
+//        ou  📞 Ligar +351 931 492 206
 
 // Animation timing (ms)
 const B_TYPING_DURATION = 600;
